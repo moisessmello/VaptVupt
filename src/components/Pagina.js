@@ -13,10 +13,10 @@ export default function Pagina(props) {
     <>
       <Navbar expand="lg" style={{ backgroundColor: '#f0f0f0' }}> {/* Cor de fundo cinza claro */}
         <Container>
-          <Navbar.Brand href="/poupatempo">
+          <Navbar.Brand href="/vaptvupt">
             <img
               src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
-              alt="Poupa Tempo"
+              alt="VaptVupt"
               className="d-inline-block align-top"
               style={{ width: "100px", height: "40px" }} // Ajuste o tamanho conforme necessário
             />

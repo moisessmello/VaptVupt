@@ -1,218 +1,174 @@
 "use client";
 
 import Pagina from "@/components/Pagina";
-import apiLocalidade from "@/app/page";
-
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
-import { FaAngleLeft } from "react-icons/fa";
-//import { v4 } from "uuid";
+import { MdOutlineArrowBack } from "react-icons/md";
+import { MdOutlineDateRange } from "react-icons/md";
 
-export default function Page({ params }) {
+export default function Page() {
   const route = useRouter();
-
-  const vaptvup = JSON.parse(localStorage.getItem("vaptvup")) || [];
-  const dados = vaptvup.find((item) => item.id == params.id);
-  const unidades = dados || {
-    nome: "",
-    sigla: "",
-    uf: "",
-    cidade: "",
-    pais: "Brasil",
-  };
-
-  const [paises, setPaises] = useState([]);
-  const [ufs, setUfs] = useState([]);
-  const [cidades, setCidades] = useState([]);
-  const [camposBrasil, setCamposBrasil] = useState(false);
-
-  useEffect(() => {
-    apiLocalidade.get(`paises`).then((resultado) => {
-      setPaises(resultado.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    apiLocalidade.get(`estados?orderBy=nome`).then((resultado) => {
-      setUfs(resultado.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    apiLocalidade.get(`estados//municipios`).then((resultado) => {
-      setCidades(resultado.data);
-    });
-  }, []);
+  const [isClicked, setIsClicked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   function salvar(dados) {
-    if (vaptvupt.id) {
-      Object.assign(vaptvup, dados);
-    } else {
-      dados.id = v4();
-      vaptvup.push(dados);
-    }
-
-    localStorage.setItem("vaptvup", JSON.stringify(vaptvup));
-    return route.push("/vaptvup");
+    const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
+    vaptvupt.push(dados);
+    localStorage.setItem("vaptvupt", JSON.stringify(vaptvupt)); //setItem é para inserir
+    return route.push("/vaptvupt");
   }
+
+  const handleCardClick = () => {
+    setIsClicked(!isClicked);
+    setShowModal(true); // Exibe a modal ao clicar no card
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <>
-      <Pagina titulo="Poupa Tempo">
-        <Formik
-          initialValues={vaptvup}
-          onSubmit={(values) => salvar(values)}
-          validationSchema={vaptvupValidator}
-        >
-          {({ values, handleChange, handleSubmit, errors, touched }) => {
-            useEffect(() => {
-              setCamposBrasil(values.pais == "Brasil");
-            }, [values.pais]);
+      <Pagina titulo="Unidades de Atendimento">
+        <h2 className="text-center mt-4">Dados do Agendamento</h2>
 
-            useEffect(() => {
-              apiLocalidade
-                .get(`estados/${values.uf}/municipios`)
-                .then((resultado) => {
-                  setCidades(resultado.data);
-                });
-            }, [values.uf]);
-
-            return (
-              <Form className="mt-3">
-                <Form.Group className="mb-3" controlId="nome">
-                  <Form.Label>Nome</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite o nome do aeroporto"
-                    name="nome"
-                    value={values.nome}
-                    onChange={handleChange("nome")}
-                    isInvalid={!!errors.nome && touched.nome}
-                  />
-                  <ErrorMessage
-                    name="nome"
-                    component="div"
-                    className="text-danger"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="sigla">
-                  <Form.Label>Sigla</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Digite a sigla aeroporto"
-                    name="sigla"
-                    value={values.sigla}
-                    onChange={handleChange("sigla")}
-                    isInvalid={!!errors.sigla && touched.sigla}
-                  />
-                  <ErrorMessage
-                    name="sigla"
-                    component="div"
-                    className="text-danger"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="pais">
-                  <Form.Label>País</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    name="pais"
-                    value={values.pais}
-                    onChange={handleChange("pais")}
-                    isInvalid={!!errors.pais && touched.pais}
-                  >
-                    <option value={""}>Selecione</option>
-                    {paises.map((item) => (
-                      <option key={item.id} value={item.nome}>
-                        {" "}
-                        {item.nome}{" "}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <ErrorMessage
-                    name="pais"
-                    component="div"
-                    className="text-danger"
-                  />
-                </Form.Group>
-                {camposBrasil && (
-                  <>
+        <Container>
+          <Row className="mt-4" style={{ gap: "50px" }}>
+            <Col md={7}>
+              <Formik
+                initialValues={{
+                  orgao: "",
+                  servico: "",
+                  uf: "",
+                  municipio: "",
+                  pais: "",
+                }}
+                onSubmit={(values) => salvar(values)}
+              >
+                {({ values, handleChange, handleSubmit }) => (
+                  <Form className="w-100">
+                    <Form.Group className="mb-3" controlId="nome">
+                      <Form.Label>Órgão (opcional)</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="orgao"
+                        value={values.orgao}
+                        onChange={handleChange("orgao")}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="servico">
+                      <Form.Label>Serviços</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="servico"
+                        value={values.servico}
+                        onChange={handleChange("servico")}
+                      />
+                    </Form.Group>
                     <Form.Group className="mb-3" controlId="uf">
                       <Form.Label>UF</Form.Label>
-                      <Form.Select
-                        aria-label="Default select example"
+                      <Form.Control
+                        type="text"
                         name="uf"
                         value={values.uf}
                         onChange={handleChange("uf")}
-                        isInvalid={!!errors.uf && touched.uf}
-                      >
-                        <option value={""}>Selecione</option>
-                        {ufs.map((item) => (
-                          <option key={item.id} value={item.sigla}>
-                            {item.sigla} - {item.nome}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <ErrorMessage
-                        name="uf"
-                        component="div"
-                        className="text-danger"
                       />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="cidade">
+                    <Form.Group className="mb-3" controlId="municipio">
                       <Form.Label>Cidade</Form.Label>
-                      <Form.Select
-                        aria-label="Default select example"
-                        name="cidade"
-                        value={values.cidade}
-                        onChange={handleChange("cidade")}
-                        isInvalid={!!errors.cidade && touched.cidade}
-                      >
-                        <option value={""}>Selecione</option>
-                        {cidades.map((item) => (
-                          <option key={item.nome} value={item.nome}>
-                            {" "}
-                            {item.nome}{" "}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <ErrorMessage
-                        name="cidade"
-                        component="div"
-                        className="text-danger"
+                      <Form.Control
+                        type="text"
+                        name="municipio"
+                        value={values.municipio}
+                        onChange={handleChange("municipio")}
                       />
                     </Form.Group>
-                  </>
-                )}
+                    <Form.Group className="mb-3" controlId="pais">
+                      <Form.Label>País</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="pais"
+                        value={values.pais}
+                        onChange={handleChange("pais")}
+                      />
+                    </Form.Group>
 
-                <div className="text-center">
-                  <Link href={"/vaptvup"} className="btn btn-primary">
-                    <FaAngleLeft />
-                    Voltar
-                  </Link>
-                  <Button
-                    variant="success"
-                    className="ms-1"
-                    onClick={handleSubmit}
-                  >
-                    <FaCheck />
-                    Salvar
-                  </Button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
+                    <div className="text-center mt-4">
+                      <Link href="/vaptvupt" className="btn btn-danger me-3">
+                        <MdOutlineArrowBack /> Voltar
+                      </Link>
+                      <Button onClick={handleSubmit} variant="success">
+                        Salvar <FaCheck />
+                      </Button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </Col>
+
+            <Col
+              md={3}
+              className="d-flex justify-content-center align-items-center"
+            >
+              <Card
+                onClick={handleCardClick}
+                style={{
+                  width: "200%",
+                  backgroundColor: isClicked ? "#d4edda" : "#fff",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease",
+                }}
+              >
+                <Card.Body className="d-flex align-items-center">
+                  <MdOutlineDateRange size={40} className="me-3" />
+                  <div>
+                    <Card.Title>Agendamento por data</Card.Title>
+                    <Card.Text>
+                      Escolha a data que melhor se ajusta à sua agenda.
+                    </Card.Text>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+
+        {/* Modal de erro */}
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header >
+          <Modal.Title className="w-100 text-center">
+                <h1>Atenção</h1>
+              </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+              Primeiro escolha Serviço e Município.
+            </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-center">
+            <Button variant="success" onClick={handleCloseModal}>
+              ok
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Pagina>
       <footer className="bg-dark text-white text-center p-4 mt-5">
         <Container>
           <Row>
             <Col md={4}>
               <Image
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnHe9NbtpQ6e3rBZU0eg8_kJd68C2lah9BWA&s"
+                src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
                 alt="Logo Poupa Tempo"
                 style={{ width: "100px" }}
               />
@@ -230,13 +186,13 @@ export default function Page({ params }) {
               <p>
                 Telefone: (61) 3613-0000
                 <br />
-                Email: contato@vaptvup.com
+                Email: contato@vaptvupt.com
               </p>
             </Col>
           </Row>
           <Row className="mt-4">
             <Col md={12}>
-              <p>&copy; 2024 Poupa Tempo - Todos os direitos reservados</p>
+              <p>&copy; 2024 VaptVupt - Todos os direitos reservados</p>
             </Col>
           </Row>
         </Container>

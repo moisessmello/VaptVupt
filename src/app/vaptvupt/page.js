@@ -20,12 +20,12 @@ export default function Page() {
   const handleClose = () => setShowModal(false);
   const handleConfirm = () => {
     setShowModal(false);
-    window.location.href = "./vaptvupt/create"; // Redireciona para a página de agendamento
+    window.location.href = "./vaptvupt/form/id"; // Redireciona para a página de agendamento
   };
 
   return (
     <>
-      <Pagina titulo="Poupa Tempo">
+      <Pagina titulo="VaptVupt">
         <Container className="mt-4">
           <h2 className="text-center mb-4">Agendamentos Disponíveis</h2>
           <Carousel>

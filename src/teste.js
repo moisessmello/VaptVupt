@@ -42,7 +42,7 @@ export default function Page() {
 
   return (
     <>
-      <Pagina titulo="Unidades VaptVupt">
+      <Pagina titulo="Unidades de Atendimento">
         <h2 className="text-center mt-4">Dados do Agendamento</h2>
 
         <Container>
