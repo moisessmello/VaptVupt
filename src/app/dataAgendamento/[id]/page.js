@@ -1,35 +1,32 @@
 "use client";
 
+
 import Pagina from "@/components/Pagina";
 import { useState } from "react";
 import { Button, Col, Container, Row, Modal } from "react-bootstrap";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
-import { Image,} from "react-bootstrap";
+import { Image, } from "react-bootstrap";
 import ptBR from "date-fns/locale/pt-BR";
+import { useRouter } from "next/navigation";
+
 
 const locales = { "pt-BR": ptBR };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 
-export default function Page({params}) {
+export default function Page({ params }) {
+  const router = useRouter(); // Hook para navegação
   const [dataSelecionada, setDataSelecionada] = useState(null);
   const [horarioSelecionado, setHorarioSelecionado] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  //Buscando dados de agendamento
   const agendamentos = JSON.parse(localStorage.getItem("vaptvupt"));
-  const agendamentoBuscado = agendamentos.find(item => item.id == params.id);
-
-  // Eventos de agendamento
   const [eventos, setEventos] = useState([]);
-  
-  // Abre o modal de agendamento
+
   const handleSlotSelect = ({ start }) => {
     setDataSelecionada(start);
     setShowModal(true);
   };
-
   function salvarAgendamento() {
     if (dataSelecionada && horarioSelecionado) {
       const novoEvento = {
@@ -44,11 +41,27 @@ export default function Page({params}) {
     } else {
       alert("Por favor, selecione uma data e horário.");
     }
-  } 
+  }
+
+  // Funções para os botões
+  const handleVoltar = () => {
+    router.push('../vaptvupt/form/id'); // Altere '/outra-pagina' para a rota desejada
+  };
+  const handleLimpar = () => {
+    setDataSelecionada(null);
+    setHorarioSelecionado("");
+    setEventos([]); // Limpa todos os eventos do calendário
+    setShowModal(false); // Fecha o modal, se aberto
+  };
+
+  const handleAvancar = () => {
+    router.push('/cliente'); // Altere para a rota da próxima página
+  };
+
 
   return (
     <>
-       <Pagina titulo="Agendar Data e Hora">
+      <Pagina titulo="Agendar Data e Hora">
         <Container>
           <Row className="justify-content-center mt-5">
             <Col md={12}>
@@ -62,6 +75,24 @@ export default function Page({params}) {
                 style={{ height: 500, margin: "50px" }}
                 onSelectSlot={handleSlotSelect}
               />
+            </Col>
+          </Row>
+          {/* Botões de navegação */}
+          <Row className="justify-content-center mt-3">
+            <Col md={3}>
+              <Button variant="secondary" onClick={handleVoltar}>
+                Voltar
+              </Button>
+            </Col>
+            <Col md={3}>
+              <Button variant="warning" onClick={handleLimpar}>
+                Limpar
+              </Button>
+            </Col>
+            <Col md={3}>
+              <Button variant="primary" onClick={handleAvancar}>
+                Avançar
+              </Button>
             </Col>
           </Row>
         </Container>
@@ -86,7 +117,7 @@ export default function Page({params}) {
               <option value="15:00">15:00</option>
               <option value="16:00">16:00</option>
             </select>
-          </Modal.Body>
+            </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
               Cancelar
