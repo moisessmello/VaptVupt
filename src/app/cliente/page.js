@@ -33,17 +33,17 @@ export default function Page() {
     const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
     dados.id = v4();
     vaptvupt.push(dados);
-    localStorage.setItem("vaptvupt", JSON.stringify(vaptvupt)); 
+    localStorage.setItem("vaptvupt", JSON.stringify(vaptvupt));
     return route.push(`/....${dados.id}`);
   }
- 
+
   return (
     <>
       <Pagina titulo="Cliente">
         <h2 className="text-center mt-4">Dados Pessoais</h2>
 
-        <Container >
-          <Row className="mt-4">
+        <Container className="h-100 d-flex align-items-center justify-content-center">
+          <Row className="w-100">
             <Col md={7}>
               <Formik
                 initialValues={{
@@ -71,7 +71,7 @@ export default function Page() {
                   return (
                     <Form className="w-100">
                       <Form.Group className="mb-3" controlId="nome">
-                        <Form.Label>Órgão (opcional)</Form.Label>
+                        <Form.Label>Nome</Form.Label>
                         <Form.Control
                           type="text"
                           name="orgao"
@@ -80,7 +80,7 @@ export default function Page() {
                         />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="servico">
-                        <Form.Label>Serviços</Form.Label>
+                        <Form.Label>CPF</Form.Label>
                         <Form.Control
                           type="text"
                           name="servico"
@@ -89,51 +89,24 @@ export default function Page() {
                         />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="pais">
-                        <Form.Label>País</Form.Label>
-                        <Form.Select
-                          name="pais"
-                          value={values.pais}
-                          onChange={handleChange('pais')}
-                        >
-                          <option value=''>Selecione</option>
-                          {paises.map(item => (
-                            <option key={item.nome} value={item.nome}>
-                              {item.nome}
-                            </option>
-                          ))}
-                        </Form.Select>
+                        <Form.Label>Telefone</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="servico"
+                          value={values.servico}
+                          onChange={handleChange("servico")}
+                        />
                       </Form.Group>
                       {camposBrasil &&
                         <>
                           <Form.Group className="mb-3" controlId="uf">
-                            <Form.Label>UF</Form.Label>
-                            <Form.Select
-                              name="uf"
-                              value={values.uf}
-                              onChange={handleChange('uf')}
-                            >
-                              <option value=''>Selecione</option>
-                              {ufs.map(item => (
-                                <option key={item.sigla} value={item.sigla}>
-                                  {item.sigla} - {item.nome}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="cidade">
-                            <Form.Label>Cidade</Form.Label>
-                            <Form.Select
-                              name="cidade"
-                              value={values.cidade}
-                              onChange={handleChange('cidade')}
-                            >
-                              <option value=''>Selecione</option>
-                              {cidades.map(item => (
-                                <option key={item.nome} value={item.nome}>
-                                  {item.nome}
-                                </option>
-                              ))}
-                            </Form.Select>
+                            <Form.Label>E-mail</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="servico"
+                              value={values.servico}
+                              onChange={handleChange("servico")}
+                            />
                           </Form.Group>
                         </>
                       }
@@ -151,7 +124,7 @@ export default function Page() {
               </Formik>
             </Col>
           </Row>
-        </Container>        
+        </Container>
       </Pagina>
 
       <footer className="bg-dark text-white text-center p-4 mt-5">
