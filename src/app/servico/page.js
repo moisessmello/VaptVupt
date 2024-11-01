@@ -37,24 +37,18 @@ export default function Page() {
     return route.push(`/....${dados.id}`);
   }
 
-  function handleAvancar() {
-    route.push("/orgao"); // Substitua "/proxima-pagina" pela rota da página desejada
-  }
-
   return (
     <>
-      <Pagina titulo="Cliente">
+      <Pagina titulo="Serviços">
         <Container className="d-flex align-items-center justify-content-center vh-100">
           <Row className="w-100 justify-content-center">
             <Col md={8}>
-              <h2 className="text-center mt-4">Dados Pessoais</h2>
+              <h2 className="text-center mt-4">Dados dos Serviços</h2>
               <Formik
                 initialValues={{
-                  orgao: "",
                   servico: "",
-                  uf: "",
-                  municipio: "",
-                  pais: "Brasil",
+                  descricao: "",
+                                    
                 }}
                 onSubmit={(values) => salvar(values)}
               >
@@ -73,49 +67,42 @@ export default function Page() {
 
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
-                      <Form.Group className="mb-3" controlId="nome">
-                        <Form.Label>Nome</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="orgao"
-                          value={values.orgao}
-                          onChange={handleChange("orgao")}
-                        />
-                      </Form.Group>
                       <Form.Group className="mb-3" controlId="servico">
-                        <Form.Label>CPF</Form.Label>
+                        <Form.Label>Serviço</Form.Label>
                         <Form.Control
                           type="text"
                           name="servico"
-                          value={values.servico}
+                          value={values.orgao}
                           onChange={handleChange("servico")}
                         />
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="telefone">
-                        <Form.Label>Telefone</Form.Label>
+
+                      <Form.Group className="mb-3" controlId="descricao">
+                        <Form.Label>Descrição</Form.Label>
                         <Form.Control
                           type="text"
-                          name="telefone"
+                          name="descricao"
                           value={values.servico}
-                          onChange={handleChange("servico")}
+                          onChange={handleChange("descricao")}
                         />
                       </Form.Group>
-                      {camposBrasil &&
-                        <Form.Group className="mb-3" controlId="email">
-                          <Form.Label>E-mail</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="email"
-                            value={values.servico}
-                            onChange={handleChange("servico")}
-                          />
-                        </Form.Group>
-                      }
+
+                      <Form.Group className="mb-3" controlId="valor">
+                        <Form.Label>Valor</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valor"
+                          value={values.servico}
+                          onChange={handleChange("valor")}
+                        />
+                      </Form.Group>
+
+
                       <div className="text-center mt-4">
-                        <Link href="/vaptvupt" className="btn btn-danger me-3">
+                        <Link href="/dataAgendamento/id" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleAvancar}>
+                        <Button type="submit" variant="success">
                           Salvar <FaCheck />
                         </Button>
                       </div>

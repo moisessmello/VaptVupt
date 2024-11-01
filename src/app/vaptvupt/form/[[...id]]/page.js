@@ -63,18 +63,18 @@ export default function Page() {
   return (
     <>
       <Pagina titulo="Unidades de Atendimento">
-        <h2 className="text-center mt-4">Dados do Agendamento</h2>
+        <h2 className="text-center mt-4">Unidades</h2>
 
         <Container>
           <Row className="mt-4" style={{ gap: "50px" }}>
             <Col md={7}>
               <Formik
                 initialValues={{
-                  orgao: "",
-                  servico: "",
-                  uf: "",
-                  municipio: "",
+                  nome: "",
                   pais: "Brasil",
+                  uf: "",
+                  cidade: "",
+                  
                 }}
                 onSubmit={(values) => salvar(values)}
               >
@@ -95,23 +95,15 @@ export default function Page() {
                   return (
                     <Form className="w-100">
                       <Form.Group className="mb-3" controlId="nome">
-                        <Form.Label>Órgão (opcional)</Form.Label>
+                        <Form.Label>Nome</Form.Label>
                         <Form.Control
                           type="text"
-                          name="orgao"
-                          value={values.orgao}
-                          onChange={handleChange("orgao")}
+                          name="nome"
+                          value={values.nome}
+                          onChange={handleChange("nome")}
                         />
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="servico">
-                        <Form.Label>Serviços</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="servico"
-                          value={values.servico}
-                          onChange={handleChange("servico")}
-                        />
-                      </Form.Group>
+                      
                       <Form.Group className="mb-3" controlId="pais">
                         <Form.Label>País</Form.Label>
                         <Form.Select
@@ -210,7 +202,7 @@ export default function Page() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center">
-            Primeiro escolha Serviço e Município.
+            Primeiro escolha a Unidade e Cidade.
           </Modal.Body>
           <Modal.Footer className="d-flex justify-content-center">
             <Button variant="success" onClick={handleCloseModal}>

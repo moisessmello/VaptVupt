@@ -37,17 +37,13 @@ export default function Page() {
     return route.push(`/....${dados.id}`);
   }
 
-  function handleAvancar() {
-    route.push("/orgao"); // Substitua "/proxima-pagina" pela rota da página desejada
-  }
-
   return (
     <>
-      <Pagina titulo="Cliente">
+      <Pagina titulo="Funcionário">
         <Container className="d-flex align-items-center justify-content-center vh-100">
           <Row className="w-100 justify-content-center">
             <Col md={8}>
-              <h2 className="text-center mt-4">Dados Pessoais</h2>
+              <h2 className="text-center mt-4">Dados Funcionários</h2>
               <Formik
                 initialValues={{
                   orgao: "",
@@ -82,7 +78,8 @@ export default function Page() {
                           onChange={handleChange("orgao")}
                         />
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="servico">
+
+                      <Form.Group className="mb-3" controlId="cpf">
                         <Form.Label>CPF</Form.Label>
                         <Form.Control
                           type="text"
@@ -91,6 +88,26 @@ export default function Page() {
                           onChange={handleChange("servico")}
                         />
                       </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="genero">
+                        <Form.Label>Gênero</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="servico"
+                          value={values.servico}
+                          onChange={handleChange("servico")}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="cargo">
+                        <Form.Label>Cargo</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="servico"
+                          value={values.servico}
+                          onChange={handleChange("servico")}
+                        />
+                      </Form.Group>
+                      
                       <Form.Group className="mb-3" controlId="telefone">
                         <Form.Label>Telefone</Form.Label>
                         <Form.Control
@@ -100,22 +117,21 @@ export default function Page() {
                           onChange={handleChange("servico")}
                         />
                       </Form.Group>
-                      {camposBrasil &&
-                        <Form.Group className="mb-3" controlId="email">
-                          <Form.Label>E-mail</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="email"
-                            value={values.servico}
-                            onChange={handleChange("servico")}
-                          />
-                        </Form.Group>
-                      }
+                      <Form.Group className="mb-3" controlId="email">
+                        <Form.Label>E-mail</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="email"
+                          value={values.servico}
+                          onChange={handleChange("servico")}
+                        />
+                      </Form.Group>
+
                       <div className="text-center mt-4">
                         <Link href="/vaptvupt" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleAvancar}>
+                        <Button type="submit" variant="success">
                           Salvar <FaCheck />
                         </Button>
                       </div>

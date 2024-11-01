@@ -37,17 +37,18 @@ export default function Page() {
     return route.push(`/....${dados.id}`);
   }
 
-  function handleAvancar() {
-    route.push("/orgao"); // Substitua "/proxima-pagina" pela rota da página desejada
-  }
+  const handleAvancar = () => {
+    router.push('/servico'); // Altere para a rota da próxima página
+  };
+
 
   return (
     <>
-      <Pagina titulo="Cliente">
+      <Pagina titulo="Órgao">
         <Container className="d-flex align-items-center justify-content-center vh-100">
           <Row className="w-100 justify-content-center">
             <Col md={8}>
-              <h2 className="text-center mt-4">Dados Pessoais</h2>
+              <h2 className="text-center mt-4">Dados do Órgao</h2>
               <Formik
                 initialValues={{
                   orgao: "",
@@ -83,7 +84,7 @@ export default function Page() {
                         />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="servico">
-                        <Form.Label>CPF</Form.Label>
+                        <Form.Label>CNPJ</Form.Label>
                         <Form.Control
                           type="text"
                           name="servico"
@@ -112,10 +113,10 @@ export default function Page() {
                         </Form.Group>
                       }
                       <div className="text-center mt-4">
-                        <Link href="/vaptvupt" className="btn btn-danger me-3">
+                        <Link href="/dataAgendamento/id" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleAvancar}>
+                        <Button type="submit" variant="success">
                           Salvar <FaCheck />
                         </Button>
                       </div>

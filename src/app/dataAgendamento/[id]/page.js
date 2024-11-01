@@ -55,7 +55,7 @@ export default function Page({ params }) {
   };
 
   const handleAvancar = () => {
-    router.push('/cliente'); // Altere para a rota da próxima página
+    router.push('/orgao'); // Altere para a rota da próxima página
   };
 
 
