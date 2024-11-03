@@ -12,7 +12,8 @@ export default function Page() {
   const [orgaos, setOrgaos] = useState([]);
 
   useEffect(() => {
-    setOrgaos(JSON.parse(localStorage.getItem('orgaos')) || []);
+    const dadosOrgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
+    setOrgaos(dadosOrgaos);
   }, []);
 
   function excluir(id) {
@@ -50,7 +51,7 @@ export default function Page() {
           {orgaos.map((item) => (
             <tr key={item.id}>
               <td style={{ border: '1px solid #007bff', padding: '10px' }}> {/* Borda externa da célula */}
-                <Link href={`/orgao/form/${item.id}`}>
+                <Link href={`/orgaos/form/${item.id}`}>
                   <FaRegEdit title="Editar" className="text-primary" />
                 </Link>
                 <MdDelete
@@ -69,7 +70,7 @@ export default function Page() {
       </Table>
 
       <div className="d-flex justify-content-end mt-3">
-        <Link href="/orgao/form" className="btn btn-primary">
+        <Link href="/orgaos/form" className="btn btn-primary">
           <FaPlusCircle /> Novo
         </Link>
       </div>

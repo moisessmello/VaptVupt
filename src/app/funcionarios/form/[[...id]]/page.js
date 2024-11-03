@@ -12,64 +12,36 @@ import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
 
 export default function Page() {
-  const route = useRouter();
-  const [showModal, setShowModal] = useState(false);
-  const [paises, setPaises] = useState([]);
-  const [ufs, setUfs] = useState([]);
-  const [cidades, setCidades] = useState([]);
-  const [camposBrasil, setCamposBrasil] = useState(false);
-
-  useEffect(() => {
-    apiLocalidade.get(`paises`).then(resultado => {
-      setPaises(resultado.data);
-    });
-
-    apiLocalidade.get(`estados?orderBy=nome`).then(resultado => {
-      setUfs(resultado.data);
-    });
-  }, []);
+ 
+   const route = useRouter()
 
   function salvar(dados) {
-    const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
+    const funcionarios = JSON.parse(localStorage.getItem("funcionarios")) || [];
     dados.id = v4();
-    vaptvupt.push(dados);
-    localStorage.setItem("vaptvupt", JSON.stringify(vaptvupt));
-    return route.push(`/....${dados.id}`);
-  }
-
-  function handleAvancar() {
-    route.push("/orgao"); // Substitua "/proxima-pagina" pela rota da página desejada
+    funcionarios.push(dados);
+    localStorage.setItem("funcionarios", JSON.stringify(funcionarios));
+    return route.push(`/funcionarios`);
   }
 
   return (
     <>
-      <Pagina titulo="Cliente">
+      <Pagina titulo="Funcionários">
         <Container className="d-flex align-items-center justify-content-center vh-100">
           <Row className="w-100 justify-content-center">
             <Col md={8}>
-              <h2 className="text-center mt-4">Dados Pessoais</h2>
+              <h2 className="text-center mt-4">Dados Funcionários</h2>
               <Formik
                 initialValues={{
-                  orgao: "",
-                  servico: "",
-                  uf: "",
-                  municipio: "",
-                  pais: "Brasil",
+                  nome: "",
+                  cpf: "",
+                  genero: "",
+                  cargo: "",
+                  telefone: "",
                 }}
                 onSubmit={(values) => salvar(values)}
               >
                 {({ values, handleChange, handleSubmit }) => {
-                  useEffect(() => {
-                    setCamposBrasil(values.pais === 'Brasil');
-                  }, [values.pais]);
-
-                  useEffect(() => {
-                    if (values.uf) {
-                      apiLocalidade.get(`estados/${values.uf}/municipios`).then(resultado => {
-                        setCidades(resultado.data);
-                      });
-                    }
-                  }, [values.uf]);
+                  
 
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
@@ -77,45 +49,56 @@ export default function Page() {
                         <Form.Label>Nome</Form.Label>
                         <Form.Control
                           type="text"
-                          name="orgao"
-                          value={values.orgao}
-                          onChange={handleChange("orgao")}
+                          name="nome"
+                          value={values.nome}
+                          onChange={handleChange("nome")}
                         />
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="servico">
+
+                      <Form.Group className="mb-3" controlId="cpf">
                         <Form.Label>CPF</Form.Label>
                         <Form.Control
                           type="text"
-                          name="servico"
-                          value={values.servico}
-                          onChange={handleChange("servico")}
+                          name="cpf"
+                          value={values.cpf}
+                          onChange={handleChange("cpf")}
                         />
                       </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="genero">
+                        <Form.Label>Gênero</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="genero"
+                          value={values.genero}
+                          onChange={handleChange("genero")}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="cargo">
+                        <Form.Label>Cargo</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="cargo"
+                          value={values.cargo}
+                          onChange={handleChange("cargo")}
+                        />
+                      </Form.Group>
+                      
                       <Form.Group className="mb-3" controlId="telefone">
                         <Form.Label>Telefone</Form.Label>
                         <Form.Control
                           type="text"
                           name="telefone"
-                          value={values.servico}
-                          onChange={handleChange("servico")}
+                          value={values.telefone}
+                          onChange={handleChange("telefone")}
                         />
                       </Form.Group>
-                      {camposBrasil &&
-                        <Form.Group className="mb-3" controlId="email">
-                          <Form.Label>E-mail</Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="email"
-                            value={values.servico}
-                            onChange={handleChange("servico")}
-                          />
-                        </Form.Group>
-                      }
+                      
                       <div className="text-center mt-4">
-                        <Link href="/vaptvupt" className="btn btn-danger me-3">
+                        <Link href="/funcionarios" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleAvancar}>
+                        <Button type="submit" variant="success" onClick={handleSubmit}>
                           Salvar <FaCheck />
                         </Button>
                       </div>
