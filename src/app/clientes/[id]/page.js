@@ -11,98 +11,94 @@ import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
 
-export default function Page() {
+export default function Page({ params }) {
   const route = useRouter();
-  const [showModal, setShowModal] = useState(false);
-  const [paises, setPaises] = useState([]);
-  const [ufs, setUfs] = useState([]);
-  const [cidades, setCidades] = useState([]);
-  const [camposBrasil, setCamposBrasil] = useState(false);
+  const dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
+  const dataAgendamentoBuscado =dataAgendamentos.find(item => item.id == params.id)
 
-  useEffect(() => {
-    apiLocalidade.get(`paises`).then(resultado => {
-      setPaises(resultado.data);
-    });
 
-    apiLocalidade.get(`estados?orderBy=nome`).then(resultado => {
-      setUfs(resultado.data);
-    });
-  }, []);
 
   function salvar(dados) {
-    const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
-    dados.id = v4();
-    vaptvupt.push(dados);
-    localStorage.setItem("vaptvupt", JSON.stringify(vaptvupt));
-    return route.push(`/....${dados.id}`);
+    const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+    const clienteNovo = {
+
+      id: v4(),
+      nome: dados.nome,
+      cpf: dados.cpf,
+      telefone: dados.telefone,
+      email: dados.email,
+      dataAgendamento: dataAgendamentoBuscado
+    }
+    clientes.push(clienteNovo)    
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+    return route.push(`/salvarAgendamentos/${clienteNovo.id}`);
   }
+
 
   return (
     <>
-      <Pagina titulo="Serviços">
+      <Pagina titulo="Clientes">
         <Container className="d-flex align-items-center justify-content-center vh-100">
           <Row className="w-100 justify-content-center">
             <Col md={8}>
-              <h2 className="text-center mt-4">Dados dos Serviços</h2>
+              <h2 className="text-center mt-4">Dados Pessoais</h2>
               <Formik
                 initialValues={{
-                  servico: "",
-                  descricao: "",
-                                    
+                  nome: "",
+                  cpf: "",
+                  telefone: "",
+                  email: "",
                 }}
                 onSubmit={(values) => salvar(values)}
               >
                 {({ values, handleChange, handleSubmit }) => {
-                  useEffect(() => {
-                    setCamposBrasil(values.pais === 'Brasil');
-                  }, [values.pais]);
 
-                  useEffect(() => {
-                    if (values.uf) {
-                      apiLocalidade.get(`estados/${values.uf}/municipios`).then(resultado => {
-                        setCidades(resultado.data);
-                      });
-                    }
-                  }, [values.uf]);
 
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
-                      <Form.Group className="mb-3" controlId="servico">
-                        <Form.Label>Serviço</Form.Label>
+                      <Form.Group className="mb-3" controlId="nome">
+                        <Form.Label>Nome</Form.Label>
                         <Form.Control
                           type="text"
-                          name="servico"
-                          value={values.orgao}
-                          onChange={handleChange("servico")}
+                          name="nome"
+                          value={values.nome}
+                          onChange={handleChange("nome")}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="cpf">
+                        <Form.Label>CPF</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="cpf"
+                          value={values.cpf}
+                          onChange={handleChange("cpf")}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="telefone">
+                        <Form.Label>Telefone</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="telefone"
+                          value={values.telefone}
+                          onChange={handleChange("telefone")}
                         />
                       </Form.Group>
 
-                      <Form.Group className="mb-3" controlId="descricao">
-                        <Form.Label>Descrição</Form.Label>
+                      <Form.Group className="mb-3" controlId="email">
+                        <Form.Label>E-mail</Form.Label>
                         <Form.Control
-                          type="text"
-                          name="descricao"
-                          value={values.servico}
-                          onChange={handleChange("descricao")}
+                          type="email"
+                          name="email"
+                          value={values.email}
+                          onChange={handleChange("email")}
                         />
                       </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="valor">
-                        <Form.Label>Valor</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="valor"
-                          value={values.servico}
-                          onChange={handleChange("valor")}
-                        />
-                      </Form.Group>
-
 
                       <div className="text-center mt-4">
-                        <Link href="/dataAgendamento/id" className="btn btn-danger me-3">
+                        <Link href="/vaptvupt" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success">
+                        <Button type="submit" variant="success" onClick={handleSubmit}>
                           Salvar <FaCheck />
                         </Button>
                       </div>

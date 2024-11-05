@@ -39,7 +39,7 @@ export default function Page() {
       >
         <thead>
           <tr>
-            <th style={{ border: "2px solid #007bff" }}>#</th>
+            <th style={{ border: "2px solid #007bff" }}>Ações</th>
             <th style={{ border: "2px solid #007bff" }}>Nome</th>
             <th style={{ border: "2px solid #007bff" }}>CPF</th>
             <th style={{ border: "2px solid #007bff" }}>Gênero</th>

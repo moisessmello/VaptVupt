@@ -1,63 +1,74 @@
 "use client";
 
-
 import Pagina from "@/components/Pagina";
 import { useState } from "react";
-import { Button, Col, Container, Row, Modal } from "react-bootstrap";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { Image, } from "react-bootstrap";
-import ptBR from "date-fns/locale/pt-BR";
+import { Button, Col, Container, Row, Modal, Image } from "react-bootstrap";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import { useRouter } from "next/navigation";
-
-
-const locales = { "pt-BR": ptBR };
-const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
+import ptBR from "date-fns/locale/pt-BR";
+import { v4 } from "uuid";
 
 export default function Page({ params }) {
-  const router = useRouter(); // Hook para navegação
+  const router = useRouter();
   const [dataSelecionada, setDataSelecionada] = useState(null);
   const [horarioSelecionado, setHorarioSelecionado] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const agendamentos = JSON.parse(localStorage.getItem("vaptvupt"));
-  const [eventos, setEventos] = useState([]);
 
-  const handleSlotSelect = ({ start }) => {
-    setDataSelecionada(start);
+  const handleDateClick = (arg) => {
+    setDataSelecionada(arg.date);
     setShowModal(true);
   };
-  function salvarAgendamento() {
-    if (dataSelecionada && horarioSelecionado) {
-      const novoEvento = {
-        title: `Agendado para ${horarioSelecionado}`,
-        start: dataSelecionada,
-        end: dataSelecionada,
-      };
-      setEventos([...eventos, novoEvento]);
-      localStorage.setItem("vaptvupt", JSON.stringify([...eventos, novoEvento]));
-      setShowModal(false);
-      alert("Agendamento salvo com sucesso!");
-    } else {
-      alert("Por favor, selecione uma data e horário.");
-    }
-  }
 
-  // Funções para os botões
+  const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || []
+  const vaptvuptBuscado = vaptvupt.find(item => item.id == params.id)
+  let dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
+
+function salvarAgendamento() {
+  if (dataSelecionada && horarioSelecionado) {
+    const novoEvento = {
+      id: v4(),
+      hora: horarioSelecionado,
+      start: dataSelecionada,
+      vaptvupt: vaptvuptBuscado
+    };
+
+    // Verifica se dataAgendamentos é um array
+    if (!Array.isArray(dataAgendamentos)) {
+      console.error("dataAgendamentos não é um array. Reinicializando como um array vazio.");
+      dataAgendamentos = []; // Reinicializa como um array vazio
+    }
+
+    // Adiciona o novo evento
+    dataAgendamentos.push(novoEvento);
+    
+    // Armazena novamente no localStorage
+    localStorage.setItem("dataAgendamentos", JSON.stringify(dataAgendamentos));
+    setShowModal(false);
+    alert("Agendamento salvo com sucesso!");
+    router.push(`/clientes/${novoEvento.id}`)
+
+  } else {
+    alert("Por favor, selecione uma data e horário.");
+  }
+}
+
   const handleVoltar = () => {
-    router.push('../vaptvupt/form/id'); // Altere '/outra-pagina' para a rota desejada
+    router.push('../vaptvupt/form/id');
   };
+
   const handleLimpar = () => {
     setDataSelecionada(null);
     setHorarioSelecionado("");
-    setEventos([]); // Limpa todos os eventos do calendário
-    setShowModal(false); // Fecha o modal, se aberto
+    setEventos([]);
+    localStorage.removeItem("vaptvupt");
   };
 
   const handleAvancar = () => {
-    router.push('/orgao'); // Altere para a rota da próxima página
+    router.push('/clientes');
   };
-
 
   return (
     <>
@@ -65,19 +76,17 @@ export default function Page({ params }) {
         <Container>
           <Row className="justify-content-center mt-5">
             <Col md={12}>
-              <Calendar
-                localizer={localizer}
-                events={eventos}
-                startAccessor="start"
-                endAccessor="end"
+              <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                locale={ptBR}
+                dateClick={handleDateClick}
                 selectable
-                culture="pt-BR" // Configura o calendário para o português do Brasil
-                style={{ height: 500, margin: "50px" }}
-                onSelectSlot={handleSlotSelect}
+                height="auto"
+
               />
             </Col>
           </Row>
-          {/* Botões de navegação */}
           <Row className="justify-content-center mt-3">
             <Col md={3}>
               <Button variant="secondary" onClick={handleVoltar}>
@@ -97,7 +106,6 @@ export default function Page({ params }) {
           </Row>
         </Container>
 
-        {/* Modal para Seleção de Horário */}
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Selecione o Horário</Modal.Title>
@@ -117,7 +125,7 @@ export default function Page({ params }) {
               <option value="15:00">15:00</option>
               <option value="16:00">16:00</option>
             </select>
-            </Modal.Body>
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
               Cancelar

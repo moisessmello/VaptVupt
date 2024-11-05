@@ -87,17 +87,16 @@ export default function Page() {
             <Col md={7}>
               <Formik
                 initialValues={{
-                  nome: "",
+                  orgao: "", // Adicionar o campo orgao
                   pais: "Brasil",
                   uf: "",
                   cidade: "",
-                  orgao: "", // Adicionar o campo orgao
                 }}
                 onSubmit={(values) => salvar(values)}
               >
-                {({ values, 
-                handleChange, 
-                handleSubmit }) => {
+                {({ values,
+                  handleChange,
+                  handleSubmit }) => {
 
                   useEffect(() => {
                     setCamposBrasil(values.pais == "Brasil");
@@ -114,11 +113,11 @@ export default function Page() {
                   return (
                     <Form className="w-100">
                       {/* Select de Órgão */}
-                      <Form.Group className="mb-3" controlId="nome do orgao">
+                      <Form.Group className="mb-3" controlId="orgao">
                         <Form.Label>Nome do órgão</Form.Label>
                         <Form.Select
                           name="orgao"
-                          value={values.orgao || orgaoSelecionado} // Usa o valor do Local Storage ou o valor do formulário
+                          value={values.orgao} // Usa o valor do Local Storage ou o valor do formulário
                           onChange={handleChange("orgao")}
                         >
                           <option value="">Selecione</option>

@@ -5,22 +5,21 @@ import { useState, useEffect } from "react";
 import { Button, Table, Container, Row, Col, Image } from "react-bootstrap";
 import jsPDF from "jspdf";
 
-export default function ConfirmacaoAgendamento() {
-  const [cliente, setCliente] = useState({});
-  const [agendamento, setAgendamento] = useState({});
-  const [orgao, setOrgao] = useState({});
+export default function ConfirmacaoAgendamento({params}) {
+  const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+  const cliente = clientes.find(item => item.id == params.id)
 
-  // Carrega os dados simulados das tabelas
-  useEffect(() => {
-    const clienteData = JSON.parse(localStorage.getItem("cliente"));
-    const agendamentoData = JSON.parse(localStorage.getItem("agendamento"));
-    const orgaoData = JSON.parse(localStorage.getItem("orgao"));
+  const dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos"));
+  const dataAgendamento = dataAgendamentos.find(item => item.id == cliente.dataAgendamento.id)
 
-    setCliente(clienteData || {});
-    setAgendamento(agendamentoData || {});
-    setOrgao(orgaoData || {});
-  }, []);
+  const vaptvupts = JSON.parse(localStorage.getItem("vaptvupt"));
+  const vaptvupt = vaptvupts.find(item => item.id == dataAgendamento.vaptvupt.id)
 
+  const orgaos = JSON.parse(localStorage.getItem("orgaos"));
+  const orgao = orgaos.find(item => item.nome == vaptvupt.orgao);
+
+  console.log(orgao)
+  
   const gerarPDF = () => {
     const doc = new jsPDF();
 
@@ -113,19 +112,19 @@ export default function ConfirmacaoAgendamento() {
             </tr>
             <tr>
               <td><strong>Unidade</strong></td>
-              <td>{agendamento.unidade}</td>
+              <td>{vaptvupt.unidade}</td>
             </tr>
             <tr>
               <td><strong>Serviço</strong></td>
-              <td>{agendamento.servico}</td>
+              <td>{vaptvupt.servico}</td>
             </tr>
             <tr>
               <td><strong>Data</strong></td>
-              <td>{agendamento.data}</td>
+              <td>{vaptvupt.data}</td>
             </tr>
             <tr>
               <td><strong>Hora</strong></td>
-              <td>{agendamento.hora}</td>
+              <td>{vaptvupt.hora}</td>
             </tr>
           </tbody>
         </Table>

@@ -9,23 +9,23 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 export default function Page() {
-  const [orgaos, setOrgaos] = useState([]);
+  const [servicos, setServicos] = useState([]);
 
   useEffect(() => {
-    const dadosOrgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
-    setOrgaos(dadosOrgaos);
+    const dadosServicos = JSON.parse(localStorage.getItem("servicos")) || [];
+    setServicos(dadosServicos);
   }, []);
 
   function excluir(id) {
     if (confirm('Deseja realmente excluir o registro?')) {
-      const dados = orgaos.filter(item => item.id !== id);
-      localStorage.setItem('orgaos', JSON.stringify(dados));
-      setOrgaos(dados);
+      const dados = servicos.filter(item => item.id !== id);
+      localStorage.setItem('servicos', JSON.stringify(dados));
+      setServicos(dados);
     }
   }
 
   return (
-    <Pagina titulo="Órgão">
+    <Pagina titulo="Serviços">
       <Table
         striped
         hover
@@ -42,16 +42,15 @@ export default function Page() {
           <tr>
             <th style={{ border: '2px solid #007bff' }}>Ações</th>
             <th style={{ border: '2px solid #007bff' }}>Nome</th>
-            <th style={{ border: '2px solid #007bff' }}>CNPJ</th>
-            <th style={{ border: '2px solid #007bff' }}>Telefone</th>
-            <th style={{ border: '2px solid #007bff' }}>Email</th>
+            <th style={{ border: '2px solid #007bff' }}>Descrição</th>
+            <th style={{ border: '2px solid #007bff' }}>Valor</th>
           </tr>
         </thead>
         <tbody>
-          {orgaos.map((item) => (
+          {servicos.map((item) => (
             <tr key={item.id}>
               <td style={{ border: '1px solid #007bff', padding: '10px' }}> {/* Borda externa da célula */}
-                <Link href={`/orgaos/form/${item.id}`}>
+                <Link href={`/servicos/form/${item.id}`}>
                   <FaRegEdit title="Editar" className="text-primary" />
                 </Link>
                 <MdDelete
@@ -61,16 +60,15 @@ export default function Page() {
                 />
               </td>
               <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.nome}</td> {/* Borda externa da célula */}
-              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.cnpj}</td> {/* Borda externa da célula */}
-              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.telefone}</td> {/* Borda externa da célula */}
-              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.email}</td> {/* Borda externa da célula */}
+              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.descricao}</td> {/* Borda externa da célula */}
+              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.valor}</td> {/* Borda externa da célula */}
             </tr>
           ))}
         </tbody>
       </Table>
 
       <div className="d-flex justify-content-end mt-3">
-        <Link href="/orgaos/form" className="btn btn-primary">
+        <Link href="/servicos/form" className="btn btn-primary">
           <FaPlusCircle /> Novo
         </Link>
       </div>
