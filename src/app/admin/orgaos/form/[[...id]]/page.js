@@ -25,7 +25,7 @@ export default function Page({ params }) {
     }
 
     localStorage.setItem("orgaos", JSON.stringify(orgaos));
-    return route.push("/orgaos");
+    return route.push("/admin/orgaos");
   }
 
   return (
@@ -81,7 +81,7 @@ export default function Page({ params }) {
                 <div className="text-danger">{errors.email}</div>
               </Form.Group>
               <div className="text-center">
-                <Link href="/orgaos" className="btn btn-danger me-3">
+                <Link href="/admin/orgaos" className="btn btn-danger me-3">
                   <MdOutlineArrowBack /> Voltar
                 </Link>
                 <Button type="submit" variant="success" onClick={handleSubmit}>

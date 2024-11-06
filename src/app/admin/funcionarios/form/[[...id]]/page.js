@@ -20,7 +20,7 @@ export default function Page() {
     dados.id = v4();
     funcionarios.push(dados);
     localStorage.setItem("funcionarios", JSON.stringify(funcionarios));
-    return route.push(`/funcionarios`);
+    return route.push(`/admin/funcionarios`);
   }
 
   return (
@@ -95,7 +95,7 @@ export default function Page() {
                       </Form.Group>
                       
                       <div className="text-center mt-4">
-                        <Link href="/funcionarios" className="btn btn-danger me-3">
+                        <Link href="/admin/funcionarios" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
                         <Button type="submit" variant="success" onClick={handleSubmit}>
@@ -109,42 +109,7 @@ export default function Page() {
             </Col>
           </Row>
         </Container>
-      </Pagina>
-
-      <footer className="bg-dark text-white text-center p-4 mt-5">
-        <Container>
-          <Row>
-            <Col md={4}>
-              <Image
-                src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
-                alt="Logo VaptVupt"
-                style={{ width: "100px" }}
-              />
-            </Col>
-            <Col md={4}>
-              <h5>Localização</h5>
-              <p>
-                Avenida Central, 1234
-                <br />
-                Centro, Águas Lindas - GO - 72.910-000
-              </p>
-            </Col>
-            <Col md={4}>
-              <h5>Contato</h5>
-              <p>
-                Telefone: (61) 3613-0000
-                <br />
-                Email: contato@vaptvupt.com
-              </p>
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col md={12}>
-              <p>&copy; 2024 VaptVupt - Todos os direitos reservados</p>
-            </Col>
-          </Row>
-        </Container>
-      </footer>
+      </Pagina>     
     </>
   );
 }

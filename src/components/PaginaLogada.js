@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
-export default function Pagina(props) {
+export default function PaginaLogada(props) {
   useEffect(() => {
     document.body.style.backgroundColor = "#f0f8ff";
     return () => {
@@ -26,7 +26,7 @@ export default function Pagina(props) {
           </Navbar.Brand>
 
           
-          <Link href="/login" passHref>
+          <Link href="/vaptvupt" passHref>
             <button
               style={{
                 backgroundColor: "#0059b3",
@@ -37,7 +37,7 @@ export default function Pagina(props) {
                 cursor: "pointer",
               }}
             >
-              Acesso Restrito
+              Sair
             </button>
           </Link>
         </Container>

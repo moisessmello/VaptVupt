@@ -85,7 +85,7 @@ export default function Page() {
 
       {/* Botão para Adicionar Novo Serviço */}
       <div className="d-flex justify-content-end mt-3">
-        <Link href="/servicos/form" passHref>
+        <Link href="/admin/servicos/form" passHref>
           <Button variant="primary">
             <FaPlusCircle /> Novo
           </Button>

@@ -8,23 +8,22 @@ import { FaPlusCircle, FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 export default function Page() {
-  const [orgaos, setOrgaos] = useState([]);
+  const [funcionarios, setFuncionarios] = useState([]);
 
   useEffect(() => {
-    const dadosOrgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
-    setOrgaos(dadosOrgaos);
+    setFuncionarios(JSON.parse(localStorage.getItem("funcionarios")) || []);
   }, []);
 
   function excluir(id) {
     if (confirm("Deseja realmente excluir o registro?")) {
-      const dados = orgaos.filter((item) => item.id !== id);
-      localStorage.setItem("orgaos", JSON.stringify(dados));
-      setOrgaos(dados);
+      const dados = funcionarios.filter((item) => item.id !== id);
+      localStorage.setItem("funcionarios", JSON.stringify(dados));
+      setFuncionarios(dados);
     }
   }
 
   return (
-    <Pagina titulo="Órgão">
+    <Pagina titulo="Funcionários">
       {/* Botão de Voltar para a Página de Administração */}
       <div className="d-flex justify-content-start mt-3 mb-4">
         <Link href="/admin" passHref>
@@ -48,16 +47,17 @@ export default function Page() {
           <tr>
             <th style={{ border: "2px solid #007bff" }}>Ações</th>
             <th style={{ border: "2px solid #007bff" }}>Nome</th>
-            <th style={{ border: "2px solid #007bff" }}>CNPJ</th>
+            <th style={{ border: "2px solid #007bff" }}>CPF</th>
+            <th style={{ border: "2px solid #007bff" }}>Gênero</th>
+            <th style={{ border: "2px solid #007bff" }}>Cargo</th>
             <th style={{ border: "2px solid #007bff" }}>Telefone</th>
-            <th style={{ border: "2px solid #007bff" }}>Email</th>
           </tr>
         </thead>
         <tbody>
-          {orgaos.map((item) => (
+          {funcionarios.map((item) => (
             <tr key={item.id}>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                <Link href={`/orgaos/form/${item.id}`} passHref>
+                <Link href={`/funcionarios/form/${item.id}`} passHref>
                   <FaRegEdit title="Editar" className="text-primary mx-2" />
                 </Link>
                 <MdDelete
@@ -70,22 +70,25 @@ export default function Page() {
                 {item.nome}
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                {item.cnpj}
+                {item.cpf}
+              </td>
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                {item.genero}
+              </td>
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                {item.cargo}
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.telefone}
-              </td>
-              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                {item.email}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
-      {/* Botão para Adicionar Novo Órgão */}
+      {/* Botão para Adicionar Novo Funcionário */}
       <div className="d-flex justify-content-end mt-3">
-        <Link href="/orgaos/form" passHref>
+        <Link href="/admin/funcionarios/form" passHref>
           <Button variant="primary">
             <FaPlusCircle /> Novo
           </Button>

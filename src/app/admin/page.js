@@ -1,17 +1,17 @@
 "use client";
 
-import Pagina from "@/components/Pagina";
+import PaginaLogada from "@/components/PaginaLogada";
 import Link from "next/link";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
 
 export default function AdminPage() {
   return (
-    <Pagina titulo="Administração">
+    <PaginaLogada titulo="Administração">
       <Container className="d-flex flex-column align-items-center">
         <h2 className="text-center my-4">Página de Cadastro</h2>
         <Row className="justify-content-center">
          
-          <Col xs={12} md={4} className="mb-4">
+          <Col xs={12} md={3} className="mb-4">
             <Card className="h-100"> 
               <Card.Img
                 variant="top"
@@ -19,7 +19,7 @@ export default function AdminPage() {
               />
               <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <Card.Title>Funcionários</Card.Title>
-                <Link href="/funcionarios" passHref>
+                <Link href="/admin/funcionarios" passHref>
                   <Button variant="dark">Cadastrar</Button>
                 </Link>
               </Card.Body>
@@ -27,7 +27,7 @@ export default function AdminPage() {
           </Col>
 
         
-          <Col xs={12} md={4} className="mb-4">
+          <Col xs={12} md={3} className="mb-4">
             <Card className="h-100">
               <Card.Img
                 variant="top"
@@ -35,7 +35,7 @@ export default function AdminPage() {
               />
               <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <Card.Title>Orgãos</Card.Title>
-                <Link href="/orgaos" passHref>
+                <Link href="/admin/orgaos" passHref>
                   <Button variant="dark">Cadastrar</Button>
                 </Link>
               </Card.Body>
@@ -43,7 +43,7 @@ export default function AdminPage() {
           </Col>
 
         
-          <Col xs={12} md={4} className="mb-4">
+          <Col xs={12} md={3} className="mb-4">
             <Card className="h-100">
               <Card.Img
                 variant="top"
@@ -51,14 +51,29 @@ export default function AdminPage() {
               />
               <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <Card.Title>Serviços</Card.Title>
-                <Link href="/servicos" passHref>
+                <Link href="/admin/servicos" passHref>
                   <Button variant="dark">Cadastrar</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col xs={12} md={3} className="mb-4">
+            <Card className="h-100">
+              <Card.Img
+                variant="top"
+                src="https://www.coopersystem.com.br/wp-content/uploads/2023/09/dashboard-o-que-e-para-que-serve-e-tipos.jpg"
+              />
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                <Card.Title>Dashboard</Card.Title>
+                <Link href="/admin/dashboard" passHref>
+                  <Button variant="dark">Visualizar</Button>
                 </Link>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
-    </Pagina>
+    </PaginaLogada>
   );
 }

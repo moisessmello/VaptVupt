@@ -29,7 +29,7 @@ export default function Page({ params }) {
         }
     
         localStorage.setItem('servicos', JSON.stringify(servicos))
-        return route.push('/servicos')
+        return route.push('/admin/servicos')
       }
 
     return (
@@ -93,7 +93,7 @@ export default function Page({ params }) {
 
                             <div className="text-center mt-4">
                                 <Link
-                                    href="/servicos"
+                                    href="/admin/servicos"
                                     className="btn btn-danger me-3"
                                 >
                                     <MdOutlineArrowBack /> Voltar
