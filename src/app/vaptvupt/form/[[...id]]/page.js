@@ -46,7 +46,12 @@ export default function Page() {
     apiLocalidade.get(`orgaos`).then((resultado) => {
       setOrgao(resultado.data); // Substitua "resultado.data" pelo caminho correto dos dados
     });
+
+
   }, []);
+
+  const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+  
 
   function salvar(dados) {
     const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
@@ -132,6 +137,26 @@ export default function Page() {
                           )}
                         </Form.Select>
                       </Form.Group>
+                      <Form.Group className="mb-3" controlId="servico">
+                        <Form.Label>Serviço</Form.Label>
+                        <Form.Select
+                          name="servico"
+                          value={values.servico} // Usa o valor do Local Storage ou o valor do formulário
+                          onChange={handleChange("servico")}
+                        >
+                          <option value="">Selecione</option>
+                          {servicos.length > 0 ? ( // Verifica se existem órgãos para mapear
+                            servicos.map((item) => (
+                              <option key={item.id} value={item.nome}>
+                                {item.nome}
+                              </option>
+                            ))
+                          ) : (
+                            <option value="">Nenhum órgão disponível</option> // Mensagem se não houver órgãos
+                          )}
+                        </Form.Select>
+                      </Form.Group>
+
 
                       {/* Outros campos */}
                       <Form.Group className="mb-3" controlId="pais">

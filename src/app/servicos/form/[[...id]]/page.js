@@ -14,26 +14,27 @@ export default function Page({ params }) {
     const route = useRouter();
 
     const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-    const dados = servicos.find((item) => item.id == params.id);
-    const servico = dados || { nome: "", descricao: "", valor: "" };
+    const dados = servicos.find(item => item.id == params.id);
+    const servico = dados || { nome: "", descricao: "", orgao: "", valor: "" };
+
+    const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
     function salvar(dados) {
-        if (servicos.id) {
-            Object.assign(servicos, dados);
-        } else {
-            dados.id = v4();
-            servicos.push(dados);
-        }
-        // Salvar o nome do órgão no Local Storage
-        localStorage.setItem("selectedOrgao", dados.nome); // Substitua "Detran" pelo valor dinâmico
 
-        localStorage.setItem("servicos", JSON.stringify(servicos));
-        return route.push("/servicos");
-    }
+        if (servico.id) {
+          Object.assign(servico, dados)
+        } else {
+          dados.id = v4()
+          servicos.push(dados)
+        }
+    
+        localStorage.setItem('servicos', JSON.stringify(servicos))
+        return route.push('/servicos')
+      }
 
     return (
         <Pagina titulo="Serviços">
-            <Formik initialValues={servicos} onSubmit={(values) => salvar(values)}>
+            <Formik initialValues={servico} onSubmit={values => salvar(values)}>
                 {({ values,
                     handleChange,
                     handleSubmit
@@ -58,6 +59,26 @@ export default function Page({ params }) {
                                     value={values.descricao}
                                     onChange={handleChange("descricao")}
                                 />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="orgao">
+                                <Form.Label>Nome do órgão</Form.Label>
+                                <Form.Select
+                                    name="orgao"
+                                    value={values.orgao} // Usa o valor do Local Storage ou o valor do formulário
+                                    onChange={handleChange("orgao")}
+                                >
+                                    <option value="">Selecione</option>
+                                    {orgaos.length > 0 ? ( // Verifica se existem órgãos para mapear
+                                        orgaos.map((item) => (
+                                            <option key={item.id} value={item.nome}>
+                                                {item.nome}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option value="">Nenhum órgão disponível</option> // Mensagem se não houver órgãos
+                                    )}
+                                </Form.Select>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="valor">

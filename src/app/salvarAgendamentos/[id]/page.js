@@ -30,10 +30,10 @@ export default function ConfirmacaoAgendamento({params}) {
     doc.text(`Email: ${cliente.email}`, 20, 50);
     doc.text(`Telefone: ${cliente.telefone}`, 20, 60);
     doc.text(`Órgão: ${orgao.nome}`, 20, 80);
-    doc.text(`Unidade: ${agendamento.unidade}`, 20, 90);
-    doc.text(`Serviço: ${agendamento.servico}`, 20, 100);
-    doc.text(`Data: ${agendamento.data}`, 20, 110);
-    doc.text(`Hora: ${agendamento.hora}`, 20, 120);
+   
+    doc.text(`Serviço: ${vaptvupt.servico}`, 20, 100);
+    doc.text(`Data: ${dataAgendamento.start}`, 20, 110);
+    doc.text(`Hora: ${dataAgendamento.hora}`, 20, 120);
 
     // Salva o PDF para download
     doc.save("agendamento_confirmacao.pdf");
@@ -110,21 +110,18 @@ export default function ConfirmacaoAgendamento({params}) {
               <td><strong>Órgão</strong></td>
               <td>{orgao.nome}</td>
             </tr>
-            <tr>
-              <td><strong>Unidade</strong></td>
-              <td>{vaptvupt.unidade}</td>
-            </tr>
+         
             <tr>
               <td><strong>Serviço</strong></td>
               <td>{vaptvupt.servico}</td>
             </tr>
             <tr>
               <td><strong>Data</strong></td>
-              <td>{vaptvupt.data}</td>
+              <td>{dataAgendamento.start}</td>
             </tr>
             <tr>
               <td><strong>Hora</strong></td>
-              <td>{vaptvupt.hora}</td>
+              <td>{dataAgendamento.hora}</td>
             </tr>
           </tbody>
         </Table>

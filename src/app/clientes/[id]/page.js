@@ -95,7 +95,7 @@ export default function Page({ params }) {
                       </Form.Group>
 
                       <div className="text-center mt-4">
-                        <Link href="/vaptvupt" className="btn btn-danger me-3">
+                        <Link href={`/dataAgendamentos/${dataAgendamentoBuscado.vaptvupt.id}`} className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
                         <Button type="submit" variant="success" onClick={handleSubmit}>

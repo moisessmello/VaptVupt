@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect } from "react";
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
@@ -35,6 +36,7 @@ export default function Pagina(props) {
               
               
             </NavDropdown>
+            <Link href={"/login"}>Login</Link>
           </Nav>
         </Container>
       </Navbar>

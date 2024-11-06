@@ -43,6 +43,7 @@ export default function Page() {
             <th style={{ border: '2px solid #007bff' }}>Ações</th>
             <th style={{ border: '2px solid #007bff' }}>Nome</th>
             <th style={{ border: '2px solid #007bff' }}>Descrição</th>
+            <th style={{ border: '2px solid #007bff' }}>Orgão</th>
             <th style={{ border: '2px solid #007bff' }}>Valor</th>
           </tr>
         </thead>
@@ -61,6 +62,7 @@ export default function Page() {
               </td>
               <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.nome}</td> {/* Borda externa da célula */}
               <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.descricao}</td> {/* Borda externa da célula */}
+              <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.orgao}</td> {/* Borda externa da célula */}
               <td style={{ border: '1px solid #007bff', padding: '10px' }}>{item.valor}</td> {/* Borda externa da célula */}
             </tr>
           ))}
