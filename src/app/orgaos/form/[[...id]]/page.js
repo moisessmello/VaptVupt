@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Pagina from "@/components/Pagina";
 import { Formik } from "formik";
@@ -10,38 +10,28 @@ import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
 
 export default function Page({ params }) {
+  const route = useRouter();
 
-  const route = useRouter()
-
-  const orgaos = JSON.parse(localStorage.getItem('orgaos')) || []
-  const dados = orgaos.find(item => item.id == params.id)
-  const orgao = dados || { nome: '', cnpj: '', telefone: '', email: '' }
+  const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
+  const dados = orgaos.find((item) => item.id == params.id);
+  const orgao = dados || { nome: "", cnpj: "", telefone: "", email: "" };
 
   function salvar(dados) {
-
     if (orgao.id) {
-      Object.assign(orgao, dados)
+      Object.assign(orgao, dados);
     } else {
-      dados.id = v4()
-      orgaos.push(dados)
+      dados.id = v4();
+      orgaos.push(dados);
     }
 
-    localStorage.setItem('orgaos', JSON.stringify(orgaos))
-    return route.push('/orgaos')
+    localStorage.setItem("orgaos", JSON.stringify(orgaos));
+    return route.push("/orgaos");
   }
 
   return (
     <Pagina titulo="Órgãos">
-      <Formik
-        initialValues={orgao}
-        onSubmit={values => salvar(values)}
-      >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-          errors,
-        }) => {
+      <Formik initialValues={orgao} onSubmit={(values) => salvar(values)}>
+        {({ values, handleChange, handleSubmit, errors }) => {
           return (
             <Form>
               <Form.Group className="mb-3" controlId="nome">
@@ -50,7 +40,7 @@ export default function Page({ params }) {
                   type="text"
                   name="nome"
                   value={values.nome}
-                  onChange={handleChange('nome')}
+                  onChange={handleChange("nome")}
                   isInvalid={errors.nome}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -63,7 +53,7 @@ export default function Page({ params }) {
                   type="text"
                   name="cnpj"
                   value={values.cnpj}
-                  onChange={handleChange('cnpj')}
+                  onChange={handleChange("cnpj")}
                   isInvalid={errors.cnpj}
                 />
                 <div className="text-danger">{errors.cnpj}</div>
@@ -74,7 +64,7 @@ export default function Page({ params }) {
                   type="text"
                   name="telefone"
                   value={values.telefone}
-                  onChange={handleChange('telefone')}
+                  onChange={handleChange("telefone")}
                   isInvalid={errors.telefone}
                 />
                 <div className="text-danger">{errors.telefone}</div>
@@ -85,26 +75,23 @@ export default function Page({ params }) {
                   type="email"
                   name="email"
                   value={values.email}
-                  onChange={handleChange('email')}
+                  onChange={handleChange("email")}
                   isInvalid={errors.email}
                 />
                 <div className="text-danger">{errors.email}</div>
               </Form.Group>
               <div className="text-center">
-                <Button onClick={handleSubmit} variant="success">
-                  <FaCheck /> Salvar
-                </Button>
-                <Link
-                  href="/orgaos"
-                  className="btn btn-danger ms-2"
-                >
+                <Link href="/orgaos" className="btn btn-danger me-3">
                   <MdOutlineArrowBack /> Voltar
                 </Link>
+                <Button type="submit" variant="success" onClick={handleSubmit}>
+                  Salvar <FaCheck />
+                </Button>
               </div>
             </Form>
-          )
+          );
         }}
       </Formik>
     </Pagina>
-  )
+  );
 }

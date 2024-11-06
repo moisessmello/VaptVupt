@@ -93,7 +93,7 @@ export default function Page({ params }) {
 
                             <div className="text-center mt-4">
                                 <Link
-                                    href="/dataAgendamentos/id"
+                                    href="/servicos"
                                     className="btn btn-danger me-3"
                                 >
                                     <MdOutlineArrowBack /> Voltar

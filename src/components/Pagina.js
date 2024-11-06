@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect } from "react";
-import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 export default function Pagina(props) {
   useEffect(() => {
@@ -12,7 +12,9 @@ export default function Pagina(props) {
 
   return (
     <>
-      <Navbar expand="lg" style={{ backgroundColor: '#f0f0f0' }}> {/* Cor de fundo cinza claro */}
+      <Navbar expand="lg" style={{ backgroundColor: "#f0f0f0" }}>
+        {" "}
+        {/* Cor de fundo cinza claro */}
         <Container>
           <Navbar.Brand href="/vaptvupt">
             <img
@@ -33,11 +35,22 @@ export default function Pagina(props) {
 
               <NavDropdown.Divider />
               <NavDropdown.Item href="/passagens">Equatorial</NavDropdown.Item>
-              
-              
             </NavDropdown>
-            <Link href={"/login"}>Login</Link>
           </Nav>
+          <Link href="/login" passHref>
+            <button
+              style={{
+                backgroundColor: "#0059b3",
+                color: "#ffffff",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Acesso Restrito
+            </button>
+          </Link>
         </Container>
       </Navbar>
 
