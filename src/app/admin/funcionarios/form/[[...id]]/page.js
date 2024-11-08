@@ -32,6 +32,7 @@ export default function Page() {
               initialValues={{
                 nome: "",
                 cpf: "",
+                data_nascimento: "",
                 genero: "",
                 cargo: "",
                 telefone: "",
@@ -40,10 +41,13 @@ export default function Page() {
               onSubmit={(values) => salvar(values)}
             >
               {({ values, handleChange, handleSubmit, errors, touched }) => {
-                
-                values.cpf = mask(values.cpf, "999.999.999-99")
-                values.telefone = mask(values.telefone, "(99) 99999-9999")
-                
+                values.cpf = mask(values.cpf, "999.999.999-99");
+                values.telefone = mask(values.telefone, "(99) 99999-9999");
+                values.data_nascimento = mask(
+                  values.data_nascimento,
+                  "99/99/9999"
+                );
+
                 return (
                   <Form className="w-100" onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="nome">
@@ -74,6 +78,33 @@ export default function Page() {
                       </Form.Control.Feedback>
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="data_nascimento">
+                      <Form.Label>Data de Nascimento</Form.Label>
+                      <Form.Control
+                        type="text" // Altere de 'date' para 'text'
+                        name="data_nascimento"
+                        value={values.data_nascimento}
+                        onChange={(e) => {
+                          const maskedValue = mask(
+                            e.target.value,
+                            "99/99/9999"
+                          );
+                          handleChange("data_nascimento")({
+                            target: {
+                              name: "data_nascimento",
+                              value: maskedValue,
+                            },
+                          });
+                        }}
+                        isInvalid={
+                          touched.data_nascimento && !!errors.data_nascimento
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.data_nascimento}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+
                     <Form.Group className="mb-3" controlId="genero">
                       <Form.Label>Gênero</Form.Label>
                       <Form.Select
@@ -85,7 +116,9 @@ export default function Page() {
                         <option value="">Selecione</option>
                         <option value="feminino">Feminino</option>
                         <option value="masculino">Masculino</option>
-                        <option value="prefiro_nao_dizer">Prefiro não dizer</option>
+                        <option value="prefiro_nao_dizer">
+                          Prefiro não dizer
+                        </option>
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {errors.genero}
@@ -121,7 +154,10 @@ export default function Page() {
                     </Form.Group>
 
                     <div className="text-center mt-4">
-                      <Link href="/admin/funcionarios" className="btn btn-danger me-3">
+                      <Link
+                        href="/admin/funcionarios"
+                        className="btn btn-danger me-3"
+                      >
                         <MdOutlineArrowBack /> Voltar
                       </Link>
                       <Button type="submit" variant="success">
@@ -129,7 +165,7 @@ export default function Page() {
                       </Button>
                     </div>
                   </Form>
-                )
+                );
               }}
             </Formik>
           </Col>

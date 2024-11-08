@@ -12,7 +12,7 @@ export default function Pagina(props) {
 
   return (
     <>
-      <Navbar expand="lg" style={{ backgroundColor: "#f0f0f0" }}>
+      <Navbar expand="lg" style={{ backgroundColor: "#f0f0f0", minHeight: "80px" }}>
         {" "}
         {/* Cor de fundo cinza claro */}
         <Container>
@@ -21,7 +21,7 @@ export default function Pagina(props) {
               src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
               alt="VaptVupt"
               className="d-inline-block align-top"
-              style={{ width: "100px", height: "40px" }} // Ajuste o tamanho conforme necessário
+              style={{ width: "120px", height: "60px" }} // Ajuste o tamanho conforme necessário
             />
           </Navbar.Brand>
 

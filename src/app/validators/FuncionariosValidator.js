@@ -1,21 +1,18 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 export const FuncionariosValidator = Yup.object().shape({
-  nome: Yup.string()
-    .required("O nome é obrigatório")
-    .min(3, "O nome deve ter pelo menos 3 caracteres"),
+  nome: Yup.string().required("Nome é obrigatório"),
   cpf: Yup.string()
-    .required("O CPF é obrigatório")
-    .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido"),
+    .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido")
+    .required("CPF é obrigatório"),
+  data_nascimento: Yup.string()
+    .matches(/^\d{2}\/\d{2}\/\d{4}$/, "Data de nascimento inválida")
+    .required("Data de nascimento é obrigatória"),
   genero: Yup.string()
-    .required("O gênero é obrigatório")
-    .oneOf(["Masculino", "Feminino", "Outro"], "Escolha uma opção válida"),
+    .required("Gênero é obrigatório"),
   cargo: Yup.string()
-    .required("O cargo é obrigatório"),
+    .required("Cargo é obrigatório"),
   telefone: Yup.string()
-    .required("O telefone é obrigatório")
-    .matches(/^\(\d{2}\) \d{4,5}-\d{4}$/, "Telefone inválido"),
+    .matches(/^\(\d{2}\) \d{5}-\d{4}$/, "Telefone inválido")
+    .required("Telefone é obrigatório"),
 });
-
- 
-

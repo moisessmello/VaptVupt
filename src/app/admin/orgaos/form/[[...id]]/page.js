@@ -27,7 +27,7 @@ export default function Page({ params }) {
     }
 
     localStorage.setItem("orgaos", JSON.stringify(orgaos));
-    return route.push("/admin/orgaos");
+    route.push("/admin/orgaos");
   }
 
   return (
@@ -37,79 +37,80 @@ export default function Page({ params }) {
         validationSchema={OrgaosValidator}
         onSubmit={(values) => salvar(values)}
       >
-        {({ values, handleChange, handleSubmit, errors }) => {
-          values.cnpj = mask(values.cnpj, "99.999.999/9999-99")
+        {({ values, handleChange, handleSubmit, errors, setFieldValue }) => {
+          // Função para aplicar a máscara aos campos CNPJ e telefone
+          function handleMaskedChange(event, maskPattern, field) {
+            setFieldValue(field, mask(event.target.value, maskPattern));
+          }
 
-          return 
-          (
-          
-            <Form>
+          return (
+            <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="nome">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
                   type="text"
                   name="nome"
                   value={values.nome}
-                  onChange={handleChange("nome")}
+                  onChange={handleChange}
                   isInvalid={!!errors.nome}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.nome}
                 </Form.Control.Feedback>
               </Form.Group>
-  
+
               <Form.Group className="mb-3" controlId="cnpj">
                 <Form.Label>CNPJ</Form.Label>
                 <Form.Control
                   type="text"
                   name="cnpj"
                   value={values.cnpj}
-                  onChange={handleChange("cnpj")}
+                  onChange={(e) => handleMaskedChange(e, "99.999.999/9999-99", "cnpj")}
                   isInvalid={!!errors.cnpj}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.cnpj}
                 </Form.Control.Feedback>
               </Form.Group>
-  
+
               <Form.Group className="mb-3" controlId="telefone">
                 <Form.Label>Telefone</Form.Label>
                 <Form.Control
                   type="text"
                   name="telefone"
                   value={values.telefone}
-                  onChange={handleChange("telefone")}
+                  onChange={(e) => handleMaskedChange(e, "(99) 99999-9999", "telefone")}
                   isInvalid={!!errors.telefone}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.telefone}
                 </Form.Control.Feedback>
               </Form.Group>
-  
+
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
                   value={values.email}
-                  onChange={handleChange("email")}
+                  onChange={handleChange}
                   isInvalid={!!errors.email}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.email}
                 </Form.Control.Feedback>
               </Form.Group>
-  
+
               <div className="text-center">
                 <Link href="/admin/orgaos" className="btn btn-danger me-3">
                   <MdOutlineArrowBack /> Voltar
                 </Link>
-                <Button type="submit" variant="success" onClick={handleSubmit}>
+                <Button type="submit" variant="success" >
                   Salvar <FaCheck />
                 </Button>
               </div>
             </Form>
-          )
+          );
         }}
       </Formik>
     </Pagina>

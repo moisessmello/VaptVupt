@@ -48,6 +48,7 @@ export default function Page() {
             <th style={{ border: "2px solid #007bff" }}>Ações</th>
             <th style={{ border: "2px solid #007bff" }}>Nome</th>
             <th style={{ border: "2px solid #007bff" }}>CPF</th>
+            <th style={{ border: "2px solid #007bff" }}>Data de Nascimento</th>
             <th style={{ border: "2px solid #007bff" }}>Gênero</th>
             <th style={{ border: "2px solid #007bff" }}>Cargo</th>
             <th style={{ border: "2px solid #007bff" }}>Telefone</th>
@@ -57,7 +58,7 @@ export default function Page() {
           {funcionarios.map((item) => (
             <tr key={item.id}>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                <Link href={`/funcionarios/form/${item.id}`} passHref>
+                <Link href={`/admin/funcionarios/form/${item.id}`} passHref>
                   <FaRegEdit title="Editar" className="text-primary mx-2" />
                 </Link>
                 <MdDelete
@@ -71,6 +72,9 @@ export default function Page() {
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.cpf}
+              </td>
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                {item.data_nascimento}
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.genero}
