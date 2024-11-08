@@ -1,5 +1,6 @@
 "use client";
 
+import { VaptVuptValidator } from "@/app/validators/VaptvuptValidator";
 import Pagina from "@/components/Pagina";
 import apiLocalidade from "@/services/apiLocalidade";
 import { Formik } from "formik";
@@ -29,29 +30,16 @@ export default function Page() {
   const [ufs, setUfs] = useState([]);
   const [cidades, setCidades] = useState([]);
   const [camposBrasil, setCamposBrasil] = useState(false);
-  const [orgaos, setOrgaos] = useState([]); // Estado para armazenar os órgãos
-  const [orgaoSelecionado, setOrgaoSelecionado] = useState(""); // Estado para armazenar o órgão selecionado
+  
 
   useEffect(() => {
-    // Carregar países e UFs
-    apiLocalidade.get(`paises`).then((resultado) => {
-      setPaises(resultado.data);
-    });
-
-    apiLocalidade.get(`estados?orderBy=nome`).then((resultado) => {
-      setUfs(resultado.data);
-    });
-
-    // Carregar órgãos
-    apiLocalidade.get(`orgaos`).then((resultado) => {
-      setOrgao(resultado.data); // Substitua "resultado.data" pelo caminho correto dos dados
-    });
-
-
+    apiLocalidade.get(`paises`).then((resultado) => setPaises(resultado.data));
+    apiLocalidade.get(`estados?orderBy=nome`).then((resultado) => setUfs(resultado.data));
+  
   }, []);
 
   const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-  
+  const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
   function salvar(dados) {
     const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
@@ -66,21 +54,7 @@ export default function Page() {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  useEffect(() => {
-    // Carrega os órgãos do Local Storage
-    const dadosOrgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
-    setOrgaos(dadosOrgaos);
-
-    // Carrega o órgão selecionado do Local Storage
-    const orgaoSalvo = localStorage.getItem("selectedOrgao");
-    if (orgaoSalvo) {
-      setOrgaoSelecionado(orgaoSalvo);
-    }
-  }, []);
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <>
@@ -92,79 +66,91 @@ export default function Page() {
             <Col md={7}>
               <Formik
                 initialValues={{
-                  orgao: "", // Adicionar o campo orgao
+                  orgao: "",
+                  servico: "",
                   pais: "Brasil",
                   uf: "",
                   cidade: "",
                 }}
-                onSubmit={(values) => salvar(values)}
+                validationSchema={VaptVuptValidator} // Usando o validador
+                onSubmit={values => salvar(values)}
               >
-                {({ values,
+                {({
+                  values,
                   handleChange,
-                  handleSubmit }) => {
+                  handleSubmit,
+                  errors,
+                }) => {
 
                   useEffect(() => {
-                    setCamposBrasil(values.pais == "Brasil");
+                    setCamposBrasil(values.pais === "Brasil");
                   }, [values.pais]);
 
                   useEffect(() => {
-                    apiLocalidade
-                      .get(`estados/${values.uf}/municipios`)
-                      .then((resultado) => {
-                        setCidades(resultado.data);
-                      });
+                    if (values.uf) {
+                      apiLocalidade
+                        .get(`estados/${values.uf}/municipios`)
+                        .then((resultado) => setCidades(resultado.data));
+                    }
                   }, [values.uf]);
 
                   return (
-                    <Form className="w-100">
-                      {/* Select de Órgão */}
+                    <Form className="w-100" onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="orgao">
                         <Form.Label>Nome do órgão</Form.Label>
                         <Form.Select
                           name="orgao"
-                          value={values.orgao} // Usa o valor do Local Storage ou o valor do formulário
+                          value={values.orgao}
                           onChange={handleChange("orgao")}
+                          isInvalid={!!errors.orgao} // Marca o campo como inválido
                         >
                           <option value="">Selecione</option>
-                          {orgaos.length > 0 ? ( // Verifica se existem órgãos para mapear
+                          {orgaos.length > 0 ? (
                             orgaos.map((item) => (
                               <option key={item.id} value={item.nome}>
                                 {item.nome}
                               </option>
                             ))
                           ) : (
-                            <option value="">Nenhum órgão disponível</option> // Mensagem se não houver órgãos
+                            <option value="">Nenhum órgão disponível</option>
                           )}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.orgao}
+                        </Form.Control.Feedback>
                       </Form.Group>
+
                       <Form.Group className="mb-3" controlId="servico">
                         <Form.Label>Serviço</Form.Label>
                         <Form.Select
                           name="servico"
-                          value={values.servico} // Usa o valor do Local Storage ou o valor do formulário
+                          value={values.servico}
                           onChange={handleChange("servico")}
+                          isInvalid={!!errors.servico} // Marca o campo como inválido
                         >
                           <option value="">Selecione</option>
-                          {servicos.length > 0 ? ( // Verifica se existem órgãos para mapear
+                          {servicos.length > 0 ? (
                             servicos.map((item) => (
                               <option key={item.id} value={item.nome}>
                                 {item.nome}
                               </option>
                             ))
                           ) : (
-                            <option value="">Nenhum órgão disponível</option> // Mensagem se não houver órgãos
+                            <option value="">Nenhum serviço disponível</option>
                           )}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.servico}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
-
-                      {/* Outros campos */}
                       <Form.Group className="mb-3" controlId="pais">
                         <Form.Label>País</Form.Label>
                         <Form.Select
                           name="pais"
                           value={values.pais}
                           onChange={handleChange("pais")}
+                          isInvalid={!!errors.pais} // Marca o campo como inválido
                         >
                           <option value="">Selecione</option>
                           {paises.map((item) => (
@@ -173,6 +159,9 @@ export default function Page() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.pais}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       {camposBrasil && (
@@ -183,6 +172,7 @@ export default function Page() {
                               name="uf"
                               value={values.uf}
                               onChange={handleChange("uf")}
+                              isInvalid={!!errors.uf} // Marca o campo como inválido
                             >
                               <option value="">Selecione</option>
                               {ufs.map((item) => (
@@ -191,6 +181,9 @@ export default function Page() {
                                 </option>
                               ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              {errors.uf}
+                            </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="cidade">
                             <Form.Label>Cidade</Form.Label>
@@ -198,6 +191,7 @@ export default function Page() {
                               name="cidade"
                               value={values.cidade}
                               onChange={handleChange("cidade")}
+                              isInvalid={!!errors.cidade} // Marca o campo como inválido
                             >
                               <option value="">Selecione</option>
                               {cidades.map((item) => (
@@ -206,6 +200,9 @@ export default function Page() {
                                 </option>
                               ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              {errors.cidade}
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </>
                       )}
@@ -214,7 +211,7 @@ export default function Page() {
                         <Link href="/vaptvupt" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button onClick={handleSubmit} variant="success">
+                        <Button type="submit" variant="success" onClick={handleSubmit}>
                           Salvar <FaCheck />
                         </Button>
                       </div>
@@ -305,3 +302,4 @@ export default function Page() {
     </>
   );
 }
+

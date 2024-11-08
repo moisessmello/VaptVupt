@@ -1,5 +1,6 @@
 "use client";
 
+import { OrgaosValidator } from "@/app/validators/OrgaosValidator";
 import Pagina from "@/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
+import { mask } from "remask";
 import { v4 } from "uuid";
 
 export default function Page({ params }) {
@@ -30,9 +32,17 @@ export default function Page({ params }) {
 
   return (
     <Pagina titulo="Órgãos">
-      <Formik initialValues={orgao} onSubmit={(values) => salvar(values)}>
+      <Formik
+        initialValues={orgao}
+        validationSchema={OrgaosValidator}
+        onSubmit={(values) => salvar(values)}
+      >
         {({ values, handleChange, handleSubmit, errors }) => {
-          return (
+          values.cnpj = mask(values.cnpj, "99.999.999/9999-99")
+
+          return 
+          (
+          
             <Form>
               <Form.Group className="mb-3" controlId="nome">
                 <Form.Label>Nome</Form.Label>
@@ -41,12 +51,13 @@ export default function Page({ params }) {
                   name="nome"
                   value={values.nome}
                   onChange={handleChange("nome")}
-                  isInvalid={errors.nome}
+                  isInvalid={!!errors.nome}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.nome}
                 </Form.Control.Feedback>
               </Form.Group>
+  
               <Form.Group className="mb-3" controlId="cnpj">
                 <Form.Label>CNPJ</Form.Label>
                 <Form.Control
@@ -54,10 +65,13 @@ export default function Page({ params }) {
                   name="cnpj"
                   value={values.cnpj}
                   onChange={handleChange("cnpj")}
-                  isInvalid={errors.cnpj}
+                  isInvalid={!!errors.cnpj}
                 />
-                <div className="text-danger">{errors.cnpj}</div>
+                <Form.Control.Feedback type="invalid">
+                  {errors.cnpj}
+                </Form.Control.Feedback>
               </Form.Group>
+  
               <Form.Group className="mb-3" controlId="telefone">
                 <Form.Label>Telefone</Form.Label>
                 <Form.Control
@@ -65,10 +79,13 @@ export default function Page({ params }) {
                   name="telefone"
                   value={values.telefone}
                   onChange={handleChange("telefone")}
-                  isInvalid={errors.telefone}
+                  isInvalid={!!errors.telefone}
                 />
-                <div className="text-danger">{errors.telefone}</div>
+                <Form.Control.Feedback type="invalid">
+                  {errors.telefone}
+                </Form.Control.Feedback>
               </Form.Group>
+  
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -76,10 +93,13 @@ export default function Page({ params }) {
                   name="email"
                   value={values.email}
                   onChange={handleChange("email")}
-                  isInvalid={errors.email}
+                  isInvalid={!!errors.email}
                 />
-                <div className="text-danger">{errors.email}</div>
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
               </Form.Group>
+  
               <div className="text-center">
                 <Link href="/admin/orgaos" className="btn btn-danger me-3">
                   <MdOutlineArrowBack /> Voltar
@@ -89,7 +109,7 @@ export default function Page({ params }) {
                 </Button>
               </div>
             </Form>
-          );
+          )
         }}
       </Formik>
     </Pagina>

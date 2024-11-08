@@ -15,6 +15,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@govbr-ds/core": "^3.6.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.6",
@@ -31,6 +32,8 @@
     "react-dom": "^18",
     "react-icons": "^5.3.0",
     "react-input-mask": "^2.0.4",
-    "uuid": "^11.0.2"
+    "remask": "^1.2.2",
+    "uuid": "^11.0.2",
+    "yup": "^1.4.0"
   }
 }

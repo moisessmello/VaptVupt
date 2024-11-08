@@ -93,17 +93,12 @@ function salvarAgendamento() {
                 Voltar
               </Button>
             </Col>
-            <Col md={3}>
+            {/* <Col md={3}>
               <Button variant="warning" onClick={handleLimpar}>
                 Limpar
               </Button>
-            </Col>
-            <Col md={3}>
-              <Button variant="primary" onClick={handleAvancar}>
-                Avançar
-              </Button>
-            </Col>
-          </Row>
+            </Col> */}
+                      </Row>
         </Container>
 
         <Modal show={showModal} onHide={() => setShowModal(false)}>

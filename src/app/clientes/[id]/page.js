@@ -1,39 +1,37 @@
 "use client";
 
+import * as Yup from 'yup';
 import Pagina from "@/components/Pagina";
-import apiLocalidade from "@/services/apiLocalidade";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Image, Row, Modal } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
+import { ClientesValidator } from '@/app/validators/ClientesValidator';
+import { mask } from 'remask';
 
 export default function Page({ params }) {
   const route = useRouter();
   const dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
-  const dataAgendamentoBuscado =dataAgendamentos.find(item => item.id == params.id)
-
-
+  const dataAgendamentoBuscado = dataAgendamentos.find(item => item.id == params.id);
 
   function salvar(dados) {
     const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
     const clienteNovo = {
-
       id: v4(),
       nome: dados.nome,
       cpf: dados.cpf,
       telefone: dados.telefone,
       email: dados.email,
-      dataAgendamento: dataAgendamentoBuscado
-    }
-    clientes.push(clienteNovo)    
+      dataAgendamento: dataAgendamentoBuscado,
+    };
+    clientes.push(clienteNovo);
     localStorage.setItem("clientes", JSON.stringify(clientes));
     return route.push(`/salvarAgendamentos/${clienteNovo.id}`);
   }
-
 
   return (
     <>
@@ -49,10 +47,12 @@ export default function Page({ params }) {
                   telefone: "",
                   email: "",
                 }}
+                validationSchema={ClientesValidator}
                 onSubmit={(values) => salvar(values)}
               >
-                {({ values, handleChange, handleSubmit }) => {
-
+                {({ values, handleChange, handleSubmit, errors }) => {
+                  values.cpf = mask(values.cpf, "999.999.999-99")
+                  values.telefone = mask(values.telefone, "(99) 99999-9999")
 
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
@@ -63,8 +63,13 @@ export default function Page({ params }) {
                           name="nome"
                           value={values.nome}
                           onChange={handleChange("nome")}
+                          isInvalid={!!errors.nome}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.nome}
+                        </Form.Control.Feedback>
                       </Form.Group>
+
                       <Form.Group className="mb-3" controlId="cpf">
                         <Form.Label>CPF</Form.Label>
                         <Form.Control
@@ -72,8 +77,13 @@ export default function Page({ params }) {
                           name="cpf"
                           value={values.cpf}
                           onChange={handleChange("cpf")}
+                          isInvalid={!!errors.cpf}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.cpf}
+                        </Form.Control.Feedback>
                       </Form.Group>
+
                       <Form.Group className="mb-3" controlId="telefone">
                         <Form.Label>Telefone</Form.Label>
                         <Form.Control
@@ -81,7 +91,11 @@ export default function Page({ params }) {
                           name="telefone"
                           value={values.telefone}
                           onChange={handleChange("telefone")}
+                          isInvalid={!!errors.telefone}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.telefone}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="email">
@@ -91,19 +105,23 @@ export default function Page({ params }) {
                           name="email"
                           value={values.email}
                           onChange={handleChange("email")}
+                          isInvalid={!!errors.email}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.email}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <div className="text-center mt-4">
-                        <Link href={`/dataAgendamentos/${dataAgendamentoBuscado.vaptvupt.id}`} className="btn btn-danger me-3">
+                        <Link href={`/dataAgendamentos/${dataAgendamentoBuscado?.vaptvupt?.id}`} className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleSubmit}>
+                        <Button type="submit" variant="success">
                           Salvar <FaCheck />
                         </Button>
                       </div>
                     </Form>
-                  );
+                  )
                 }}
               </Formik>
             </Col>
@@ -111,6 +129,7 @@ export default function Page({ params }) {
         </Container>
       </Pagina>
 
+      {/* Rodapé */}
       <footer className="bg-dark text-white text-center p-4 mt-5">
         <Container>
           <Row>
