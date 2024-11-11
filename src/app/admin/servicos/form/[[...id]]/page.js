@@ -20,6 +20,12 @@ export default function Page({ params }) {
     const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
     function salvar(dados) {
+        // Converte valor para número ao salvar
+        const valorNumerico = parseFloat(dados.valor.replace(/[R$\s.,]/g, "").replace(",", "."));
+        if (!isNaN(valorNumerico)) {
+            dados.valor = valorNumerico; // Atualiza o valor para o número sem máscara
+        }
+
         if (servico.id) {
             Object.assign(servico, dados);
         } else {
@@ -28,7 +34,15 @@ export default function Page({ params }) {
         }
 
         localStorage.setItem("servicos", JSON.stringify(servicos));
-        return route.push('/admin/servicos');
+        route.push('/admin/servicos');
+    }
+
+    function handleValorChange(event, setFieldValue) {
+        let value = event.target.value.replace(/\D/g, "");
+        value = (value / 100).toFixed(2);
+        value = value.toString().replace(".", ",");
+        value = "R$ " + value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        setFieldValue("valor", value);
     }
 
     return (
@@ -36,9 +50,9 @@ export default function Page({ params }) {
             <Formik
                 initialValues={servico}
                 validationSchema={ServicosValidator}
-                onSubmit={values => salvar(values)}
+                onSubmit={(values) => salvar(values)}
             >
-                {({ values, handleChange, handleSubmit, errors }) => (
+                {({ values, handleChange, handleSubmit, setFieldValue, errors }) => (
                     <Form className="mt-5" onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="nome">
                             <Form.Label>Nome</Form.Label>
@@ -98,7 +112,7 @@ export default function Page({ params }) {
                                 type="text"
                                 name="valor"
                                 value={values.valor}
-                                onChange={handleChange("valor")}
+                                onChange={(e) => handleValorChange(e, setFieldValue)}
                                 isInvalid={!!errors.valor}
                             />
                             <Form.Control.Feedback type="invalid">

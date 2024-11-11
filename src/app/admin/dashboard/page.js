@@ -1,52 +1,72 @@
 "use client";
 
 import Pagina from "@/components/Pagina";
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
-import { Col, Container, Image, Row, Card, Button } from "react-bootstrap";
+import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from "chart.js";
+import { Col, Container, Row, Card, Button } from "react-bootstrap";
 import { FaUsers, FaRegBuilding, FaClipboardList } from "react-icons/fa";
 import Link from "next/link";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
   const [orgaos, setOrgaos] = useState([]);
   const [funcionarios, setFuncionarios] = useState([]);
-  const [cadastros, setCadastros] = useState(0); // Agora é um número, não um array
+  const [cadastros, setCadastros] = useState(0);
 
   useEffect(() => {
-    // Carregar dados do localStorage
     setOrgaos(JSON.parse(localStorage.getItem("orgaos")) || []);
     setFuncionarios(JSON.parse(localStorage.getItem("funcionarios")) || []);
-    setCadastros(JSON.parse(localStorage.getItem("clientes"))?.length || 0); // Contar o número de cadastros
+    setCadastros(JSON.parse(localStorage.getItem("clientes"))?.length || 0);
   }, []);
 
   const data = {
-    labels: ["Órgãos", "Funcionários", "Cadastros"], // Adicionar "Cadastros" ao gráfico
+    labels: ["Órgãos", "Funcionários", "Cadastros"],
     datasets: [
       {
         label: "Total",
-        data: [orgaos.length, funcionarios.length, cadastros], // Passar os totais corretamente
+        data: [orgaos.length, funcionarios.length, cadastros],
         backgroundColor: [
-          "rgba(75, 192, 192, 0.6)", // Cor para órgãos
-          "rgba(255, 99, 132, 0.6)", // Cor para funcionários
-          "rgba(153, 102, 255, 0.6)", // Cor para cadastros
+          "rgba(75, 192, 192, 0.8)", // Órgãos
+          "rgba(255, 99, 132, 0.8)", // Funcionários
+          "rgba(153, 102, 255, 0.8)", // Cadastros
         ],
         borderColor: [
           "rgba(75, 192, 192, 1)",
           "rgba(255, 99, 132, 1)",
-          "rgba(153, 102, 255, 1)", // Cor de borda para cadastros
+          "rgba(153, 102, 255, 1)",
         ],
-        borderWidth: 1,
+        borderWidth: 2,
+        hoverOffset: 10, // Destaque ao passar o mouse
       },
     ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          boxWidth: 20,
+          font: {
+            size: 14,
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}`,
+        },
+      },
+    },
   };
 
   return (
     <>
       <Pagina titulo="Dashboard">
-        {/* Botão de Voltar para a Página de Administração */}
         <div className="d-flex justify-content-start mt-3 mb-4">
           <Link href="/admin" passHref>
             <Button variant="secondary">Voltar para Admin</Button>
@@ -55,7 +75,6 @@ export default function Dashboard() {
 
         <h2 className="text-center mb-4">Dashboard de Informações</h2>
 
-        {/* Cards com os totais */}
         <Row className="mb-4">
           <Col md={4}>
             <Card className="shadow-sm">
@@ -92,18 +111,16 @@ export default function Dashboard() {
           </Col>
         </Row>
 
-        {/* Gráfico */}
         <div style={{ width: "70%", margin: "auto" }}>
-          <Bar data={data} options={{ responsive: true, maintainAspectRatio: false }} height={400} />
+          <Doughnut data={data} options={options} height={400} />
         </div>
 
-        {/* Total de cadastros - Em destaque */}
         <div className="text-center mt-4">
           <h4>Total de Cadastros</h4>
           <h2 className="display-4 text-info">{cadastros}</h2>
           <p>pessoas se cadastraram para atendimento.</p>
         </div>
-      </Pagina>     
+      </Pagina>
     </>
   );
 }
