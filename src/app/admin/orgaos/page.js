@@ -46,26 +46,16 @@ export default function Page() {
       >
         <thead>
           <tr>
-            <th style={{ border: "2px solid #007bff" }}>Ações</th>
             <th style={{ border: "2px solid #007bff" }}>Nome</th>
             <th style={{ border: "2px solid #007bff" }}>CNPJ</th>
             <th style={{ border: "2px solid #007bff" }}>Telefone</th>
             <th style={{ border: "2px solid #007bff" }}>Email</th>
+            <th style={{ border: "2px solid #007bff" }}>Ações</th>
           </tr>
         </thead>
         <tbody>
           {orgaos.map((item) => (
             <tr key={item.id}>
-              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                <Link href={`/orgaos/form/${item.id}`} passHref>
-                  <FaRegEdit title="Editar" className="text-primary mx-2" />
-                </Link>
-                <MdDelete
-                  title="Excluir"
-                  className="text-danger"
-                  onClick={() => excluir(item.id)}
-                />
-              </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.nome}
               </td>
@@ -77,6 +67,16 @@ export default function Page() {
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.email}
+              </td>
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                <Link href={`/admin/orgaos/form/${item.id}`} passHref>
+                  <FaRegEdit title="Editar" className="text-primary mx-2" />
+                </Link>
+                <MdDelete
+                  title="Excluir"
+                  className="text-danger"
+                  onClick={() => excluir(item.id)}
+                />
               </td>
             </tr>
           ))}

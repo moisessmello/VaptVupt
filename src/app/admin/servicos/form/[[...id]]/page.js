@@ -20,11 +20,8 @@ export default function Page({ params }) {
     const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
     function salvar(dados) {
-        // Converte valor para número ao salvar
-        const valorNumerico = parseFloat(dados.valor.replace(/[R$\s.,]/g, "").replace(",", "."));
-        if (!isNaN(valorNumerico)) {
-            dados.valor = valorNumerico; // Atualiza o valor para o número sem máscara
-        }
+        // Converte o valor para string com vírgula e ponto e salva diretamente no LocalStorage
+        dados.valor = dados.valor.replace(/\./g, '').replace(',', '.');  // Converte para formato de ponto flutuante
 
         if (servico.id) {
             Object.assign(servico, dados);

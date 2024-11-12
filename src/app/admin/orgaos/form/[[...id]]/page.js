@@ -27,7 +27,7 @@ export default function Page({ params }) {
     }
 
     localStorage.setItem("orgaos", JSON.stringify(orgaos));
-    route.push("/admin/orgaos");
+    route.push('/admin/orgaos');
   }
 
   return (

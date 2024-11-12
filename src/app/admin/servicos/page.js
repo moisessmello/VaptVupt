@@ -46,26 +46,16 @@ export default function Page() {
       >
         <thead>
           <tr>
-            <th style={{ border: "2px solid #007bff" }}>Ações</th>
             <th style={{ border: "2px solid #007bff" }}>Nome</th>
             <th style={{ border: "2px solid #007bff" }}>Descrição</th>
             <th style={{ border: "2px solid #007bff" }}>Órgão</th>
             <th style={{ border: "2px solid #007bff" }}>Valor</th>
+            <th style={{ border: "2px solid #007bff" }}>Ações</th>
           </tr>
         </thead>
         <tbody>
           {servicos.map((item) => (
             <tr key={item.id}>
-              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-                <Link href={`/servicos/form/${item.id}`} passHref>
-                  <FaRegEdit title="Editar" className="text-primary mx-2" />
-                </Link>
-                <MdDelete
-                  title="Excluir"
-                  className="text-danger"
-                  onClick={() => excluir(item.id)}
-                />
-              </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.nome}
               </td>
@@ -77,6 +67,16 @@ export default function Page() {
               </td>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.valor}
+              </td>
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                <Link href={`/admin/servicos/form/${item.id}`} passHref>
+                  <FaRegEdit title="Editar" className="text-primary mx-2" />
+                </Link>
+                <MdDelete
+                  title="Excluir"
+                  className="text-danger"
+                  onClick={() => excluir(item.id)}
+                />
               </td>
             </tr>
           ))}

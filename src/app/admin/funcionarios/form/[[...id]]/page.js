@@ -11,13 +11,21 @@ import { MdOutlineArrowBack } from "react-icons/md";
 import { mask } from "remask";
 import { v4 } from "uuid";
 
-export default function Page() {
+export default function Page({ params }) {
   const route = useRouter();
 
+  const funcionarios = JSON.parse(localStorage.getItem("funcionarios")) || [];
+  const dados = funcionarios.find(item => item.id == params.id);
+  const funcionario = dados || { nome: "", cpf: "", data_nascimento: "", genero: "", cargo: "", telefone: ""};
+  
   function salvar(dados) {
-    const funcionarios = JSON.parse(localStorage.getItem("funcionarios")) || [];
-    dados.id = v4();
-    funcionarios.push(dados);
+    if (funcionario.id) {
+      Object.assign(funcionario, dados);
+    } else {
+      dados.id = v4();
+      funcionarios.push(dados);
+    }
+
     localStorage.setItem("funcionarios", JSON.stringify(funcionarios));
     return route.push(`/admin/funcionarios`);
   }
@@ -30,17 +38,17 @@ export default function Page() {
             <h2 className="text-center mt-4">Dados Funcionários</h2>
             <Formik
               initialValues={{
-                nome: "",
-                cpf: "",
-                data_nascimento: "",
-                genero: "",
-                cargo: "",
-                telefone: "",
+                nome: funcionario.nome,
+                cpf: funcionario.cpf,
+                data_nascimento: funcionario.data_nascimento,
+                genero: funcionario.genero,
+                cargo: funcionario.cargo,
+                telefone: funcionario.telefone,
               }}
               validationSchema={FuncionariosValidator}
               onSubmit={(values) => salvar(values)}
             >
-              {({ values, handleChange, handleSubmit, errors, touched }) => {
+              {({ values, handleChange, handleSubmit, errors }) => {
                 values.cpf = mask(values.cpf, "999.999.999-99");
                 values.telefone = mask(values.telefone, "(99) 99999-9999");
                 values.data_nascimento = mask(
@@ -57,7 +65,7 @@ export default function Page() {
                         name="nome"
                         value={values.nome}
                         onChange={handleChange("nome")}
-                        isInvalid={touched.nome && !!errors.nome}
+                        isInvalid={!!errors.nome}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.nome}
@@ -71,7 +79,7 @@ export default function Page() {
                         name="cpf"
                         value={values.cpf}
                         onChange={handleChange("cpf")}
-                        isInvalid={touched.cpf && !!errors.cpf}
+                        isInvalid={!!errors.cpf}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.cpf}
@@ -81,7 +89,7 @@ export default function Page() {
                     <Form.Group className="mb-3" controlId="data_nascimento">
                       <Form.Label>Data de Nascimento</Form.Label>
                       <Form.Control
-                        type="text" // Altere de 'date' para 'text'
+                        type="text"
                         name="data_nascimento"
                         value={values.data_nascimento}
                         onChange={(e) => {
@@ -96,9 +104,7 @@ export default function Page() {
                             },
                           });
                         }}
-                        isInvalid={
-                          touched.data_nascimento && !!errors.data_nascimento
-                        }
+                        isInvalid={!!errors.data_nascimento}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.data_nascimento}
@@ -111,12 +117,12 @@ export default function Page() {
                         name="genero"
                         value={values.genero}
                         onChange={handleChange("genero")}
-                        isInvalid={touched.genero && !!errors.genero}
+                        isInvalid={!!errors.genero}
                       >
                         <option value="">Selecione</option>
-                        <option value="feminino">Feminino</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="prefiro_nao_dizer">
+                        <option value="Feminino">Feminino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Prefiro não dizer">
                           Prefiro não dizer
                         </option>
                       </Form.Select>
@@ -127,13 +133,22 @@ export default function Page() {
 
                     <Form.Group className="mb-3" controlId="cargo">
                       <Form.Label>Cargo</Form.Label>
-                      <Form.Control
-                        type="text"
+                      <Form.Select
                         name="cargo"
                         value={values.cargo}
                         onChange={handleChange("cargo")}
-                        isInvalid={touched.cargo && !!errors.cargo}
-                      />
+                        isInvalid={!!errors.cargo}
+                      >
+                        <option value="">Selecione</option>
+                        <option value="Atendente do Detran">Atendente do Detran</option>
+                        <option value="Atendente da Saneago">Atendente da Saneago</option>
+                        <option value="Atendente da Receita Federal">Atendente da Receita Federal</option>
+                        <option value="Atendente da Equatorial">Atendente da Equatorial</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                        <option value="Serviços Gerais">Serviços Gerais</option>
+                        <option value="Supervisor">Supervisor</option>
+                        
+                      </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {errors.cargo}
                       </Form.Control.Feedback>
@@ -146,7 +161,7 @@ export default function Page() {
                         name="telefone"
                         value={values.telefone}
                         onChange={handleChange("telefone")}
-                        isInvalid={touched.telefone && !!errors.telefone}
+                        isInvalid={!!errors.telefone}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.telefone}
