@@ -1,7 +1,7 @@
 "use client";
 
 import { OrgaosValidator } from "@/app/validators/OrgaosValidator";
-import Pagina from "@/components/Pagina";
+import Pagina from "@/components/PaginaLogada";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -116,3 +116,4 @@ export default function Page({ params }) {
     </Pagina>
   );
 }
+

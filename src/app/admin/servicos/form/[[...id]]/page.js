@@ -1,7 +1,7 @@
 "use client";
 
 import { ServicosValidator } from "@/app/validators/ServicosValidator";
-import Pagina from "@/components/Pagina";
+import Pagina from "@/components/PaginaLogada";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

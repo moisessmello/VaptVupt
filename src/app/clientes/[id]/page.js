@@ -5,7 +5,7 @@ import Pagina from "@/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
@@ -19,18 +19,24 @@ export default function Page({ params }) {
   const dataAgendamentoBuscado = dataAgendamentos.find(item => item.id == params.id);
 
   function salvar(dados) {
-    const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-    const clienteNovo = {
-      id: v4(),
-      nome: dados.nome,
-      cpf: dados.cpf,
-      telefone: dados.telefone,
-      email: dados.email,
-      dataAgendamento: dataAgendamentoBuscado,
-    };
-    clientes.push(clienteNovo);
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    return route.push(`/salvarAgendamentos/${clienteNovo.id}`);
+    if (cliente.id) {
+      Object.assign(cliente, dados)
+    } else {
+      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+      const clienteNovo = {
+        id: v4(),
+        nome: dados.nome,
+        tipo_documento: dados.tipo_documento,
+        documento: dados.documento,
+        telefone: dados.telefone,
+        email: dados.email,
+        dataAgendamento: dataAgendamentoBuscado,
+      };
+      clientes.push(clienteNovo);
+      localStorage.setItem("clientes", JSON.stringify(clientes));
+      return route.push(`/salvarAgendamentos/${clienteNovo.id}`);
+    }
+
   }
 
   return (
@@ -43,7 +49,8 @@ export default function Page({ params }) {
               <Formik
                 initialValues={{
                   nome: "",
-                  cpf: "",
+                  tipo_documento: "",
+                  documento: "",
                   telefone: "",
                   email: "",
                 }}
@@ -51,6 +58,21 @@ export default function Page({ params }) {
                 onSubmit={(values) => salvar(values)}
               >
                 {({ values, handleChange, handleSubmit, errors }) => {
+
+                  useEffect(() => {
+                    switch (values.tipo_documento) {
+                      case 'CPF':
+                        values.documento = mask(values.documento, '999.999.999-99');
+                        break;
+                      case 'CNPJ':
+                        values.documento = mask(values.documento, '99.999.999/9999-99');
+                        break;
+                    }
+                  }, [values.documento])
+
+                  useEffect(() => {
+                    values.documento = ''
+                  }, [values.tipo_documento])
                   values.cpf = mask(values.cpf, "999.999.999-99")
                   values.telefone = mask(values.telefone, "(99) 99999-9999")
 
@@ -69,18 +91,31 @@ export default function Page({ params }) {
                           {errors.nome}
                         </Form.Control.Feedback>
                       </Form.Group>
+                      <Form.Group className="mb-3" controlId="tipo_documento">
+                        <Form.Label>Tipo de Documento</Form.Label>
+                        <Form.Select
+                          name="tipo_documento"
+                          value={values.tipo_documento}
+                          onChange={handleChange('tipo_documento')}
+                        >
+                          <option value=''>Selecione</option>
+                          <option value='CPF'>CPF</option>
+                          <option value='CNPJ'>CNPJ</option>
 
-                      <Form.Group className="mb-3" controlId="cpf">
-                        <Form.Label>CPF</Form.Label>
+                        </Form.Select>
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="documento">
+                        <Form.Label>Documento</Form.Label>
                         <Form.Control
                           type="text"
-                          name="cpf"
-                          value={values.cpf}
-                          onChange={handleChange("cpf")}
-                          isInvalid={!!errors.cpf}
+                          name="documento"
+                          value={values.documento}
+                          onChange={handleChange("documento")}
+                          isInvalid={!!errors.documento}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {errors.cpf}
+                          {errors.documento}
                         </Form.Control.Feedback>
                       </Form.Group>
 

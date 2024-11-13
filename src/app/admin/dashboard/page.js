@@ -1,6 +1,6 @@
 "use client";
 
-import Pagina from "@/components/Pagina";
+import Pagina from "@/components/PaginaLogada";
 import { Doughnut } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from "chart.js";

@@ -1,6 +1,6 @@
 "use client";
 
-import Pagina from "@/components/Pagina";
+import Pagina from "@/components/PaginaLogada";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";

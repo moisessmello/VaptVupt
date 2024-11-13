@@ -16,7 +16,7 @@ export default function PaginaLogada(props) {
         {" "}
         {/* Cor de fundo cinza claro */}
         <Container>
-          <Navbar.Brand href="/vaptvupt">
+          <Navbar.Brand href="">
             <img
               src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
               alt="VaptVupt"
