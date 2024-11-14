@@ -1,11 +1,10 @@
-"use client";
-
+"use client"
 import * as Yup from 'yup';
 import Pagina from "@/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
@@ -17,12 +16,14 @@ export default function Page({ params }) {
   const route = useRouter();
   const dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
   const dataAgendamentoBuscado = dataAgendamentos.find(item => item.id == params.id);
+  
+  const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+  const dados = clientes.find(item => item.id == params.id) || {nome: "", tipo_documento: "", documento: "", telefone: "", email: "" };
 
   function salvar(dados) {
-    if (cliente.id) {
-      Object.assign(cliente, dados)
+    if (dados.id) {
+      Object.assign(dados, cliente)
     } else {
-      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
       const clienteNovo = {
         id: v4(),
         nome: dados.nome,
@@ -36,7 +37,6 @@ export default function Page({ params }) {
       localStorage.setItem("clientes", JSON.stringify(clientes));
       return route.push(`/salvarAgendamentos/${clienteNovo.id}`);
     }
-
   }
 
   return (
@@ -47,35 +47,20 @@ export default function Page({ params }) {
             <Col md={8}>
               <h2 className="text-center mt-4">Dados Pessoais</h2>
               <Formik
-                initialValues={{
-                  nome: "",
-                  tipo_documento: "",
-                  documento: "",
-                  telefone: "",
-                  email: "",
-                }}
+                initialValues={dados}
                 validationSchema={ClientesValidator}
                 onSubmit={(values) => salvar(values)}
               >
-                {({ values, handleChange, handleSubmit, errors }) => {
-
+                {({ values, handleChange, handleSubmit, errors, setFieldValue }) => {
                   useEffect(() => {
-                    switch (values.tipo_documento) {
-                      case 'CPF':
-                        values.documento = mask(values.documento, '999.999.999-99');
-                        break;
-                      case 'CNPJ':
-                        values.documento = mask(values.documento, '99.999.999/9999-99');
-                        break;
+                    if (values.tipo_documento === 'CPF') {
+                      setFieldValue('documento', mask(values.documento, '999.999.999-99'));
+                    } else if (values.tipo_documento === 'CNPJ') {
+                      setFieldValue('documento', mask(values.documento, '99.999.999/9999-99'));
                     }
-                  }, [values.documento])
-
-                  useEffect(() => {
-                    values.documento = ''
-                  }, [values.tipo_documento])
-                  values.cpf = mask(values.cpf, "999.999.999-99")
+                  }, [values.tipo_documento, values.documento, setFieldValue]);
+                  
                   values.telefone = mask(values.telefone, "(99) 99999-9999")
-
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="nome">
@@ -84,24 +69,24 @@ export default function Page({ params }) {
                           type="text"
                           name="nome"
                           value={values.nome}
-                          onChange={handleChange("nome")}
+                          onChange={handleChange}
                           isInvalid={!!errors.nome}
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.nome}
                         </Form.Control.Feedback>
                       </Form.Group>
+
                       <Form.Group className="mb-3" controlId="tipo_documento">
                         <Form.Label>Tipo de Documento</Form.Label>
                         <Form.Select
                           name="tipo_documento"
                           value={values.tipo_documento}
-                          onChange={handleChange('tipo_documento')}
+                          onChange={handleChange}
                         >
-                          <option value=''>Selecione</option>
-                          <option value='CPF'>CPF</option>
-                          <option value='CNPJ'>CNPJ</option>
-
+                          <option value="">Selecione</option>
+                          <option value="CPF">CPF</option>
+                          <option value="CNPJ">CNPJ</option>
                         </Form.Select>
                       </Form.Group>
 
@@ -111,7 +96,7 @@ export default function Page({ params }) {
                           type="text"
                           name="documento"
                           value={values.documento}
-                          onChange={handleChange("documento")}
+                          onChange={handleChange}
                           isInvalid={!!errors.documento}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -124,8 +109,8 @@ export default function Page({ params }) {
                         <Form.Control
                           type="text"
                           name="telefone"
-                          value={values.telefone}
-                          onChange={handleChange("telefone")}
+                          value={mask(values.telefone, "(99) 99999-9999")}
+                          onChange={handleChange}
                           isInvalid={!!errors.telefone}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -139,7 +124,7 @@ export default function Page({ params }) {
                           type="email"
                           name="email"
                           value={values.email}
-                          onChange={handleChange("email")}
+                          onChange={handleChange}
                           isInvalid={!!errors.email}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -156,7 +141,7 @@ export default function Page({ params }) {
                         </Button>
                       </div>
                     </Form>
-                  )
+                  );
                 }}
               </Formik>
             </Col>

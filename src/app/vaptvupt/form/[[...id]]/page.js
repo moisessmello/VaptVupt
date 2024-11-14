@@ -1,6 +1,6 @@
 "use client";
 
-import { VaptVuptValidator } from "@/app/validators/VaptvuptValidator";
+import { VaptVuptValidator } from "@/app/validators/VaptVuptValidator";
 import Pagina from "@/components/Pagina";
 import apiLocalidade from "@/services/apiLocalidade";
 import { Formik } from "formik";
@@ -30,15 +30,13 @@ export default function Page() {
   const [ufs, setUfs] = useState([]);
   const [cidades, setCidades] = useState([]);
   const [camposBrasil, setCamposBrasil] = useState(false);
-  
+  const [servicosBuscados, setServicosBuscados] = useState([]);
 
   useEffect(() => {
     apiLocalidade.get(`paises`).then((resultado) => setPaises(resultado.data));
     apiLocalidade.get(`estados?orderBy=nome`).then((resultado) => setUfs(resultado.data));
-  
   }, []);
 
-  const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
   const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
   function salvar(dados) {
@@ -72,8 +70,8 @@ export default function Page() {
                   uf: "",
                   cidade: "",
                 }}
-                validationSchema={VaptVuptValidator} // Usando o validador
-                onSubmit={values => salvar(values)}
+                validationSchema={VaptVuptValidator}
+                onSubmit={(values) => salvar(values)}
               >
                 {({
                   values,
@@ -94,6 +92,13 @@ export default function Page() {
                     }
                   }, [values.uf]);
 
+                  //Pega o orgão escolhido e trás os serviços que está vinculado a ele
+                  useEffect(() => {
+                    const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+                    const servicosFiltrados = servicos.filter(item => item.orgao === values.orgao);
+                    setServicosBuscados(servicosFiltrados);
+                  }, [values.orgao]);
+
                   return (
                     <Form className="w-100" onSubmit={handleSubmit}>
                       <Form.Group className="mb-3" controlId="orgao">
@@ -102,7 +107,7 @@ export default function Page() {
                           name="orgao"
                           value={values.orgao}
                           onChange={handleChange("orgao")}
-                          isInvalid={!!errors.orgao} // Marca o campo como inválido
+                          isInvalid={!!errors.orgao}
                         >
                           <option value="">Selecione</option>
                           {orgaos.length > 0 ? (
@@ -126,11 +131,11 @@ export default function Page() {
                           name="servico"
                           value={values.servico}
                           onChange={handleChange("servico")}
-                          isInvalid={!!errors.servico} // Marca o campo como inválido
+                          isInvalid={!!errors.servico}
                         >
                           <option value="">Selecione</option>
-                          {servicos.length > 0 ? (
-                            servicos.map((item) => (
+                          {servicosBuscados.length > 0 ? (
+                            servicosBuscados.map((item) => (
                               <option key={item.id} value={item.nome}>
                                 {item.nome}
                               </option>
@@ -150,7 +155,7 @@ export default function Page() {
                           name="pais"
                           value={values.pais}
                           onChange={handleChange("pais")}
-                          isInvalid={!!errors.pais} // Marca o campo como inválido
+                          isInvalid={!!errors.pais}
                         >
                           <option value="">Selecione</option>
                           {paises.map((item) => (
@@ -172,7 +177,7 @@ export default function Page() {
                               name="uf"
                               value={values.uf}
                               onChange={handleChange("uf")}
-                              isInvalid={!!errors.uf} // Marca o campo como inválido
+                              isInvalid={!!errors.uf}
                             >
                               <option value="">Selecione</option>
                               {ufs.map((item) => (
@@ -191,7 +196,7 @@ export default function Page() {
                               name="cidade"
                               value={values.cidade}
                               onChange={handleChange("cidade")}
-                              isInvalid={!!errors.cidade} // Marca o campo como inválido
+                              isInvalid={!!errors.cidade}
                             >
                               <option value="">Selecione</option>
                               {cidades.map((item) => (
@@ -211,7 +216,7 @@ export default function Page() {
                         <Link href="/vaptvupt" className="btn btn-danger me-3">
                           <MdOutlineArrowBack /> Voltar
                         </Link>
-                        <Button type="submit" variant="success" onClick={handleSubmit}>
+                        <Button type="submit" variant="success">
                           Salvar <FaCheck />
                         </Button>
                       </div>
@@ -248,7 +253,6 @@ export default function Page() {
           </Row>
         </Container>
 
-        {/* Modal de erro */}
         <Modal show={showModal} onHide={handleCloseModal} centered>
           <Modal.Header>
             <Modal.Title className="w-100 text-center">
@@ -302,4 +306,3 @@ export default function Page() {
     </>
   );
 }
-
