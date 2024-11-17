@@ -28,7 +28,7 @@ export default function ConfirmacaoAgendamento({ params }) {
     // Adiciona os dados de agendamento ao PDF
     doc.text("Confirmação de Agendamento", 20, 20);
     doc.text(`Nome: ${cliente.nome}`, 20, 30);
-    doc.text(`CPF: ${cliente.cpf}`, 20, 40);
+    doc.text(`CPF: ${cliente.documento}`, 20, 40);
     doc.text(`Email: ${cliente.email}`, 20, 50);
     doc.text(`Telefone: ${cliente.telefone}`, 20, 60);
     doc.text(`Órgão: ${orgao.nome}`, 20, 80);

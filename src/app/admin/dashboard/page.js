@@ -28,9 +28,9 @@ export default function Dashboard() {
         label: "Total",
         data: [orgaos.length, funcionarios.length, cadastros],
         backgroundColor: [
-          "rgba(75, 192, 192, 0.8)", // Órgãos
-          "rgba(255, 99, 132, 0.8)", // Funcionários
-          "rgba(153, 102, 255, 0.8)", // Cadastros
+          "rgba(75, 192, 192, 0.8)", 
+          "rgba(255, 99, 132, 0.8)", 
+          "rgba(153, 102, 255, 0.8)", 
         ],
         borderColor: [
           "rgba(75, 192, 192, 1)",

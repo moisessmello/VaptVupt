@@ -217,7 +217,7 @@ export default function Page() {
                           <MdOutlineArrowBack /> Voltar
                         </Link>
                         <Button type="submit" variant="success">
-                          Salvar <FaCheck />
+                          Continuar <FaCheck />
                         </Button>
                       </div>
                     </Form>

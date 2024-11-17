@@ -10,6 +10,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { useRouter } from "next/navigation";
 import ptBR from "date-fns/locale/pt-BR";
 import { v4 } from "uuid";
+import Swal from "sweetalert2";
 
 export default function Page({ params }) {
   const router = useRouter();
@@ -22,41 +23,57 @@ export default function Page({ params }) {
     setShowModal(true);
   };
 
-  const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || []
-  const vaptvuptBuscado = vaptvupt.find(item => item.id == params.id)
-  let dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
+  const vaptvupt = JSON.parse(localStorage.getItem("vaptvupt")) || [];
+  const vaptvuptBuscado = vaptvupt.find((item) => item.id == params.id);
+  let dataAgendamentos =
+    JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
 
-function salvarAgendamento() {
-  if (dataSelecionada && horarioSelecionado) {
-    const novoEvento = {
-      id: v4(),
-      hora: horarioSelecionado,
-      start: dataSelecionada,
-      vaptvupt: vaptvuptBuscado
-    };
+  function salvarAgendamento() {
+    if (dataSelecionada && horarioSelecionado) {
+      const novoEvento = {
+        id: v4(),
+        hora: horarioSelecionado,
+        start: dataSelecionada,
+        vaptvupt: vaptvuptBuscado,
+      };
 
-    // Verifica se dataAgendamentos é um array
-    if (!Array.isArray(dataAgendamentos)) {
-      console.error("dataAgendamentos não é um array. Reinicializando como um array vazio.");
-      dataAgendamentos = []; // Reinicializa como um array vazio
+      // Verifica se dataAgendamentos é um array
+      if (!Array.isArray(dataAgendamentos)) {
+        console.error(
+          "dataAgendamentos não é um array. Reinicializando como um array vazio."
+        );
+        dataAgendamentos = []; // Reinicializa como um array vazio
+      }
+
+      // Adiciona o novo evento
+      dataAgendamentos.push(novoEvento);
+
+      // Armazena novamente no localStorage
+      localStorage.setItem(
+        "dataAgendamentos",
+        JSON.stringify(dataAgendamentos)
+      );
+      setShowModal(false);
+
+    Swal.fire({
+      title: "Sucesso!",
+      text: "Data/Hora salvo com sucesso!",
+      icon: "success",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000, // Duração do alerta
+      timerProgressBar: true,
+    });
+
+      router.push(`/clientes/${novoEvento.id}`);
+    } else {
+      alert("Por favor, selecione uma data e horário.");
     }
-
-    // Adiciona o novo evento
-    dataAgendamentos.push(novoEvento);
-    
-    // Armazena novamente no localStorage
-    localStorage.setItem("dataAgendamentos", JSON.stringify(dataAgendamentos));
-    setShowModal(false);
-    alert("Agendamento salvo com sucesso!");
-    router.push(`/clientes/${novoEvento.id}`)
-
-  } else {
-    alert("Por favor, selecione uma data e horário.");
   }
-}
 
   const handleVoltar = () => {
-    router.push('../vaptvupt/form/id');
+    router.push("../vaptvupt/form/id");
   };
 
   const handleLimpar = () => {
@@ -67,7 +84,7 @@ function salvarAgendamento() {
   };
 
   const handleAvancar = () => {
-    router.push('/clientes');
+    router.push("/clientes");
   };
 
   return (
@@ -83,7 +100,6 @@ function salvarAgendamento() {
                 dateClick={handleDateClick}
                 selectable
                 height="auto"
-
               />
             </Col>
           </Row>
@@ -93,12 +109,7 @@ function salvarAgendamento() {
                 Voltar
               </Button>
             </Col>
-            {/* <Col md={3}>
-              <Button variant="warning" onClick={handleLimpar}>
-                Limpar
-              </Button>
-            </Col> */}
-                      </Row>
+          </Row>
         </Container>
 
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -126,7 +137,7 @@ function salvarAgendamento() {
               Cancelar
             </Button>
             <Button variant="primary" onClick={salvarAgendamento}>
-              Confirmar Agendamento
+              Continuar Agendamento
             </Button>
           </Modal.Footer>
         </Modal>
