@@ -11,7 +11,8 @@ export default function Page() {
   const [funcionarios, setFuncionarios] = useState([]);
 
   useEffect(() => {
-    const dadosFuncionarios = JSON.parse(localStorage.getItem("funcionarios")) || [];
+    const dadosFuncionarios =
+      JSON.parse(localStorage.getItem("funcionarios")) || [];
     setFuncionarios(dadosFuncionarios);
   }, []);
 
@@ -25,7 +26,6 @@ export default function Page() {
 
   return (
     <Pagina titulo="Funcionários">
-      {/* Botão de Voltar para a Página de Administração */}
       <div className="d-flex justify-content-start mt-3 mb-4">
         <Link href="/admin" passHref>
           <Button variant="secondary">Voltar para Admin</Button>
@@ -56,8 +56,8 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
-      {funcionarios.map((item) => (
-        <tr key={item.id}>
+          {funcionarios.map((item) => (
+            <tr key={item.id}>
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.nome}
               </td>
@@ -76,22 +76,21 @@ export default function Page() {
               <td style={{ border: "1px solid #007bff", padding: "10px" }}>
                 {item.telefone}
               </td>
-          <td style={{ border: "1px solid #007bff", padding: "10px" }}>
-            <Link href={`/admin/funcionarios/form/${item.id}`} passHref>
-              <FaRegEdit title="Editar" className="text-primary mx-2" />
-            </Link>
-            <MdDelete
-              title="Excluir"
-              className="text-danger"
-              onClick={() => excluir(item.id)}
-            />
+              <td style={{ border: "1px solid #007bff", padding: "10px" }}>
+                <Link href={`/admin/funcionarios/form/${item.id}`} passHref>
+                  <FaRegEdit title="Editar" className="text-primary mx-2" />
+                </Link>
+                <MdDelete
+                  title="Excluir"
+                  className="text-danger"
+                  onClick={() => excluir(item.id)}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
-      {/* Botão para Adicionar Novo Funcionário */}
       <div className="d-flex justify-content-end mt-3">
         <Link href="/admin/funcionarios/form" passHref>
           <Button variant="primary">

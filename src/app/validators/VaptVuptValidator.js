@@ -1,4 +1,3 @@
-// VaptVuptValidator.js
 import * as Yup from "yup";
 
 export const VaptVuptValidator = Yup.object().shape({
@@ -6,5 +5,5 @@ export const VaptVuptValidator = Yup.object().shape({
   servico: Yup.string().required("O serviço é obrigatório."),
   pais: Yup.string().required("O país é obrigatório."),
   uf: Yup.string().required("a UF é obrigatória"),
-  cidade: Yup.string().required("a Cidade é obrigatória")
+  cidade: Yup.string().required("a Cidade é obrigatória"),
 });

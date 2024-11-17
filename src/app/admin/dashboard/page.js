@@ -3,7 +3,14 @@
 import Pagina from "@/components/PaginaLogada";
 import { Doughnut } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Col, Container, Row, Card, Button } from "react-bootstrap";
 import { FaUsers, FaRegBuilding, FaClipboardList } from "react-icons/fa";
 import Link from "next/link";
@@ -28,9 +35,9 @@ export default function Dashboard() {
         label: "Total",
         data: [orgaos.length, funcionarios.length, cadastros],
         backgroundColor: [
-          "rgba(75, 192, 192, 0.8)", 
-          "rgba(255, 99, 132, 0.8)", 
-          "rgba(153, 102, 255, 0.8)", 
+          "rgba(75, 192, 192, 0.8)",
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(153, 102, 255, 0.8)",
         ],
         borderColor: [
           "rgba(75, 192, 192, 1)",
@@ -38,7 +45,7 @@ export default function Dashboard() {
           "rgba(153, 102, 255, 1)",
         ],
         borderWidth: 2,
-        hoverOffset: 10, // Destaque ao passar o mouse
+        hoverOffset: 10,
       },
     ],
   };
@@ -73,53 +80,65 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <h2 className="text-center mb-4">Dashboard de Informações</h2>
+        <Container fluid>
+          <h2 className="text-center mb-4">Dashboard de Informações</h2>
 
-        <Row className="mb-4">
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <div className="text-center">
+          {/* Seção de Informações Resumidas */}
+          <Row className="mb-4 text-center">
+            <Col md={4}>
+              <Card className="shadow-sm">
+                <Card.Body>
                   <FaRegBuilding size={40} color="#4BC0C0" />
-                  <h4 className="mt-3">Órgãos</h4>
+                  <h5 className="mt-3">Órgãos</h5>
                   <p>{orgaos.length} órgãos cadastrados</p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <div className="text-center">
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="shadow-sm">
+                <Card.Body>
                   <FaUsers size={40} color="#FF6384" />
-                  <h4 className="mt-3">Funcionários</h4>
+                  <h5 className="mt-3">Funcionários</h5>
                   <p>{funcionarios.length} funcionários registrados</p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <div className="text-center">
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="shadow-sm">
+                <Card.Body>
                   <FaClipboardList size={40} color="#9966FF" />
-                  <h4 className="mt-3">Cadastros</h4>
+                  <h5 className="mt-3">Cadastros</h5>
                   <p>{cadastros} pessoas cadastradas para atendimento</p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
-        <div style={{ width: "70%", margin: "auto" }}>
-          <Doughnut data={data} options={options} height={400} />
-        </div>
+          {/* Seção de Gráficos */}
+          <Row className="mt-4">
+            <Col>
+              <Card className="shadow-sm">
+                <Card.Header className="bg-primary text-white text-center">
+                  Distribuição de Cadastros
+                </Card.Header>
+                <Card.Body>
+                  <div style={{ width: "70%", margin: "auto" }}>
+                    <Doughnut data={data} options={options} height={400} />
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
-        <div className="text-center mt-4">
-          <h4>Total de Cadastros</h4>
-          <h2 className="display-4 text-info">{cadastros}</h2>
-          <p>pessoas se cadastraram para atendimento.</p>
-        </div>
+          {/* Destaque de Total */}
+          <Row className="text-center mt-4">
+            <Col>
+              <h4>Total de Cadastros</h4>
+              <h2 className="display-4 text-info">{cadastros}</h2>
+              <p>Pessoas se cadastraram para atendimento.</p>
+            </Col>
+          </Row>
+        </Container>
       </Pagina>
     </>
   );

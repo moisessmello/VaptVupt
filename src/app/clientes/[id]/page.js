@@ -14,7 +14,8 @@ import { mask } from "remask";
 
 export default function Page({ params }) {
   const route = useRouter();
-  const dataAgendamentos = JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
+  const dataAgendamentos =
+    JSON.parse(localStorage.getItem("dataAgendamentos")) || [];
   const dataAgendamentoBuscado = dataAgendamentos.find(
     (item) => item.id == params.id
   );
@@ -51,11 +52,9 @@ export default function Page({ params }) {
       clientes.push(clienteNovo);
     }
 
-    // Atualizando o localStorage
     localStorage.setItem("clientes", JSON.stringify(clientes));
 
-    // Redirecionando para a página de confirmação
-    const id = dados.id || clienteNovo?.id; // Garante que clienteNovo exista antes de acessar o id
+    const id = dados.id || clienteNovo?.id; 
     route.push(`/salvarAgendamentos/${id}`);
   }
 
@@ -119,6 +118,7 @@ export default function Page({ params }) {
                             setFieldValue("tipo_documento", novoTipo);
                             setFieldValue("documento", ""); // Limpa o campo de documento
                           }}
+                          isInvalid={!!errors.tipo_documento}
                         >
                           <option value="">Selecione</option>
                           <option value="CPF">CPF</option>
