@@ -20,9 +20,7 @@ export default function Page({ params }) {
     const orgaos = JSON.parse(localStorage.getItem("orgaos")) || [];
 
     function salvar(dados) {
-        // Converte o valor para string com vírgula e ponto e salva diretamente no LocalStorage
-        dados.valor = dados.valor.replace(/\./g, '').replace(',', '.');  // Converte para formato de ponto flutuante
-
+        dados.valor = dados.valor.replace(/\./g, '').replace(',', '.');  
         if (servico.id) {
             Object.assign(servico, dados);
         } else {

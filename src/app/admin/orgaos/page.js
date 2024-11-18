@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <Pagina titulo="Órgão">
-      {/* Botão de Voltar para a Página de Administração */}
+  
       <div className="d-flex justify-content-start mt-3 mb-4">
         <Link href="/admin" passHref>
           <Button variant="secondary">Voltar para Admin</Button>
@@ -83,7 +83,7 @@ export default function Page() {
         </tbody>
       </Table>
 
-      {/* Botão para Adicionar Novo Órgão */}
+      
       <div className="d-flex justify-content-end mt-3">
         <Link href="/admin/orgaos/form" passHref>
           <Button variant="primary">

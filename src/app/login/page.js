@@ -11,9 +11,9 @@ export default function Page() {
 
   function login(dados) {
     if (dados.usuario === "admin" && dados.senha === "admin") {
-      router.push("/admin"); // Redireciona para a página de administração
+      router.push("/admin");
     } else {
-      alert("Usuário ou senha incorretos"); // Alerta em caso de falha de login
+      alert("Usuário ou senha incorretos");
     }
   }
 

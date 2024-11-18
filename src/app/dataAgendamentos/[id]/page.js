@@ -37,18 +37,18 @@ export default function Page({ params }) {
         vaptvupt: vaptvuptBuscado,
       };
 
-      // Verifica se dataAgendamentos é um array
+      
       if (!Array.isArray(dataAgendamentos)) {
         console.error(
           "dataAgendamentos não é um array. Reinicializando como um array vazio."
         );
-        dataAgendamentos = []; // Reinicializa como um array vazio
+        dataAgendamentos = []; 
       }
 
-      // Adiciona o novo evento
+     
       dataAgendamentos.push(novoEvento);
 
-      // Armazena novamente no localStorage
+     
       localStorage.setItem(
         "dataAgendamentos",
         JSON.stringify(dataAgendamentos)
@@ -62,7 +62,7 @@ export default function Page({ params }) {
       toast: true,
       position: "top-end",
       showConfirmButton: false,
-      timer: 3000, // Duração do alerta
+      timer: 3000, 
       timerProgressBar: true,
     });
 

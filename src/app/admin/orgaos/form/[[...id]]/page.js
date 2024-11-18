@@ -38,7 +38,7 @@ export default function Page({ params }) {
         onSubmit={(values) => salvar(values)}
       >
         {({ values, handleChange, handleSubmit, errors, setFieldValue }) => {
-          // Função para aplicar a máscara aos campos CNPJ e telefone
+        
           function handleMaskedChange(event, maskPattern, field) {
             setFieldValue(field, mask(event.target.value, maskPattern));
           }

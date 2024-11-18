@@ -20,7 +20,7 @@ export default function Page() {
   const handleClose = () => setShowModal(false);
   const handleConfirm = () => {
     setShowModal(false);
-    window.location.href = "./vaptvupt/form/id"; // Redireciona para a página de agendamento
+    window.location.href = "./vaptvupt/form/id";
   };
 
   return (
@@ -46,7 +46,7 @@ export default function Page() {
                     maxHeight: "300px",
                     maxWidth: "70%",
                     objectFit: "contain",
-                  }} // Controla a altura e largura máxima da imagem
+                  }}
                 />
               </div>
               <Carousel.Caption>
@@ -72,7 +72,7 @@ export default function Page() {
                     maxHeight: "300px",
                     maxWidth: "70%",
                     objectFit: "contain",
-                  }} // Controla a altura e largura máxima da imagem
+                  }}
                 />
               </div>
               <Carousel.Caption>
@@ -98,7 +98,7 @@ export default function Page() {
                     maxHeight: "300px",
                     maxWidth: "80%",
                     objectFit: "contain",
-                  }} // Controla a altura e largura máxima da imagem
+                  }}
                 />
               </div>
               <Carousel.Caption>
@@ -117,14 +117,14 @@ export default function Page() {
                 }}
               >
                 <Image
-                  src="https://logodownload.org/wp-content/uploads/2021/03/equatorial-logo.png" // Substitua por uma URL válida
+                  src="https://logodownload.org/wp-content/uploads/2021/03/equatorial-logo.png"
                   alt="Imagem Equatorial"
                   className="d-block"
                   style={{
                     maxHeight: "300px",
                     maxWidth: "70%",
                     objectFit: "contain",
-                  }} // Controla a altura e largura máxima da imagem
+                  }}
                 />
               </div>
               <Carousel.Caption>
@@ -134,14 +134,12 @@ export default function Page() {
             </Carousel.Item>
           </Carousel>
 
-          {/* Botão abaixo do Carousel */}
           <div className="text-center mt-3">
             <Button variant="dark" onClick={handleShow}>
               Agendar Atendimento
             </Button>
           </div>
 
-          {/* Modal de Confirmação */}
           <Modal
             show={showModal}
             onHide={handleClose}
@@ -170,9 +168,8 @@ export default function Page() {
               </Button>
             </Modal.Footer>
           </Modal>
-          
 
-          {/* Seção de Informações de Utilidade Pública */}
+
           <h2 className="text-center mt-5 mb-4">
             Informações de Utilidade Pública
           </h2>
@@ -193,7 +190,6 @@ export default function Page() {
         </Container>
       </Pagina>
 
-      {/* Rodapé */}
       <footer className="bg-dark text-white text-center p-4 mt-5">
         <Container>
           <Row>

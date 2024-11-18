@@ -14,18 +14,17 @@ export default function PaginaLogada(props) {
     <>
       <Navbar expand="lg" style={{ backgroundColor: "#f0f0f0" }}>
         {" "}
-        {/* Cor de fundo cinza claro */}
         <Container>
           <Navbar.Brand href="">
             <img
               src="https://vaptvupt.go.gov.br/assets/externo/img/logo-vapt-vupt.png"
               alt="VaptVupt"
               className="d-inline-block align-top"
-              style={{ width: "100px", height: "40px" }} // Ajuste o tamanho conforme necessário
+              style={{ width: "100px", height: "40px" }}
             />
           </Navbar.Brand>
 
-          
+
           <Link href="/vaptvupt" passHref>
             <button
               style={{

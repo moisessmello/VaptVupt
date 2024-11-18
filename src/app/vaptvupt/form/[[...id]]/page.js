@@ -92,7 +92,6 @@ export default function Page() {
                     }
                   }, [values.uf]);
 
-                  //Pega o orgão escolhido e trás os serviços que está vinculado a ele
                   useEffect(() => {
                     const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
                     const servicosFiltrados = servicos.filter(item => item.orgao === values.orgao);

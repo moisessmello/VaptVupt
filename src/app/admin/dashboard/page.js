@@ -83,7 +83,6 @@ export default function Dashboard() {
         <Container fluid>
           <h2 className="text-center mb-4">Dashboard de Informações</h2>
 
-          {/* Seção de Informações Resumidas */}
           <Row className="mb-4 text-center">
             <Col md={4}>
               <Card className="shadow-sm">
@@ -114,7 +113,7 @@ export default function Dashboard() {
             </Col>
           </Row>
 
-          {/* Seção de Gráficos */}
+    
           <Row className="mt-4">
             <Col>
               <Card className="shadow-sm">
@@ -130,7 +129,7 @@ export default function Dashboard() {
             </Col>
           </Row>
 
-          {/* Destaque de Total */}
+     
           <Row className="text-center mt-4">
             <Col>
               <h4>Total de Cadastros</h4>

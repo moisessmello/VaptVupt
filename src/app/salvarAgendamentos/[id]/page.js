@@ -25,7 +25,6 @@ export default function ConfirmacaoAgendamento({ params }) {
   const gerarPDF = () => {
     const doc = new jsPDF();
 
-    // Adiciona os dados de agendamento ao PDF
     doc.text("Confirmação de Agendamento", 20, 20);
     doc.text(`Nome: ${cliente.nome}`, 20, 30);
     doc.text(`CPF: ${cliente.documento}`, 20, 40);
@@ -37,7 +36,7 @@ export default function ConfirmacaoAgendamento({ params }) {
     doc.text(`Data: ${dataAgendamento.start}`, 20, 110);
     doc.text(`Hora: ${dataAgendamento.hora}`, 20, 120);
 
-    // Salva o PDF para download
+
     doc.save("agendamento_confirmacao.pdf");
   };
 
@@ -47,17 +46,16 @@ export default function ConfirmacaoAgendamento({ params }) {
         <Container>
           <h1 className="text-center mt-5">Resumo do Agendamento</h1>
 
-          {/* Tabela de Dados Pessoais do Cliente */}
           <Table
             striped
             hover
             className="mt-5"
             style={{
-              borderRadius: '15px', // Arredondamento dos cantos
-              border: '2px solid #007bff', // Borda sólida azul
-              boxShadow: '0 4px 15px rgba(0, 123, 255, 0.3)', // Sombra para dar profundidade
-              overflow: 'hidden', // Para que o arredondamento funcione
-              borderCollapse: 'collapse', // Junte bordas
+              borderRadius: '15px',
+              border: '2px solid #007bff',
+              boxShadow: '0 4px 15px rgba(0, 123, 255, 0.3)',
+              overflow: 'hidden',
+              borderCollapse: 'collapse',
             }}
           >
             <thead>
@@ -87,17 +85,16 @@ export default function ConfirmacaoAgendamento({ params }) {
             </tbody>
           </Table>
 
-          {/* Tabela de Dados do Agendamento */}
           <Table
             striped
             hover
             className="mt-5"
             style={{
-              borderRadius: '15px', // Arredondamento dos cantos
-              border: '2px solid #007bff', // Borda sólida azul
-              boxShadow: '0 4px 15px rgba(0, 123, 255, 0.3)', // Sombra para dar profundidade
-              overflow: 'hidden', // Para que o arredondamento funcione
-              borderCollapse: 'collapse', // Junte bordas
+              borderRadius: '15px',
+              border: '2px solid #007bff',
+              boxShadow: '0 4px 15px rgba(0, 123, 255, 0.3)',
+              overflow: 'hidden',
+              borderCollapse: 'collapse',
             }}
           >
             <thead>
@@ -128,7 +125,6 @@ export default function ConfirmacaoAgendamento({ params }) {
             </tbody>
           </Table>
 
-          {/* Botão para Confirmar e Gerar PDF */}
           <div className="text-center">
             <Link href={`/clientes/${cliente.id}`} className="btn btn-danger me-3">
               <MdOutlineArrowBack /> Voltar

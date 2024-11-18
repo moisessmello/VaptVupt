@@ -33,13 +33,13 @@ export default function Page({ params }) {
     let clienteNovo = null;
 
     if (dados.id) {
-      // Atualizando cliente existente
+      
       const index = clientes.findIndex((item) => item.id === dados.id);
       if (index !== -1) {
-        clientes[index] = { ...clientes[index], ...dados }; // Atualiza somente os campos alterados
+        clientes[index] = { ...clientes[index], ...dados }; 
       }
     } else {
-      // Criando um novo cliente
+      
       clienteNovo = {
         id: v4(),
         nome: dados.nome,
@@ -116,7 +116,7 @@ export default function Page({ params }) {
                           onChange={(e) => {
                             const novoTipo = e.target.value;
                             setFieldValue("tipo_documento", novoTipo);
-                            setFieldValue("documento", ""); // Limpa o campo de documento
+                            setFieldValue("documento", ""); 
                           }}
                           isInvalid={!!errors.tipo_documento}
                         >
@@ -188,7 +188,6 @@ export default function Page({ params }) {
         </Container>
       </Pagina>
 
-      {/* Rodapé */}
       <footer className="bg-dark text-white text-center p-4 mt-5">
         <Container>
           <Row>
